@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>가대 캠퍼스 컵 반납함</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Jua&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--tx:#1e2433;--sub:#717a8e;--map:#e9edf4;--bd:#e3e8f0;--bl:#f7f9fc;--blt:#5b657b;--pri:#3a4f9b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171f;--card:#1e222d;--tx:#eceef4;--sub:#9aa1b3;--map:#252a37;--bd:#333a4a;--bl:#3a3f4d;--blt:#c4c8d4;--pri:#8fa2ff}}
+:root[data-theme="dark"]{--bg:#14171f;--card:#1e222d;--tx:#eceef4;--sub:#9aa1b3;--map:#252a37;--bd:#333a4a;--bl:#3a3f4d;--blt:#c4c8d4;--pri:#8fa2ff}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;padding:12px;max-width:760px;margin:0 auto}
+h1{font-size:18px;margin:4px 0 2px}p.s{margin:0 0 10px;color:var(--sub);font-size:13px}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+button{font:inherit;font-size:13px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:16px;padding:6px 12px}
+button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+#loc{background:var(--pri);color:#fff;border-color:var(--pri);width:100%;border-radius:10px;padding:10px;margin-bottom:8px}
+#wrap{overflow:auto;height:52vh;border:1px solid var(--bd);border-radius:12px;background:var(--map)}
+#map{display:block;width:1100px;height:auto}
+.b{fill:var(--bl);stroke:var(--bd)}.bt{fill:var(--blt);font-size:26px;text-anchor:middle}
+.pl{font-size:22px;font-weight:700;pointer-events:none;paint-order:stroke;stroke:var(--map);stroke-width:5px}
+#card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-top:8px;font-size:14px;line-height:1.5}
+#card h2{font-size:16px;margin:0 0 4px}.m{color:var(--sub);font-size:13px}
+.st button{margin-top:6px}
+[hidden]{display:none!important}
+#tabs{display:flex;gap:6px;margin-bottom:10px}#tabs button{flex:1;border-radius:10px}
+#strip{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:4px 0 10px}
+.bd{flex:0 0 66px;text-align:center;cursor:pointer;border:2px solid transparent;border-radius:12px;padding:4px 2px;font-size:12px}
+.bd.on{border-color:var(--pri);background:var(--card)}
+.bd i{display:block;height:46px;border-radius:6px 6px 2px 2px;margin-bottom:4px}
+.bd small{display:block;color:var(--sub)}
+.bc{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-top:8px;font-size:14px}
+.tag{display:inline-block;font-size:12px;border:1px solid var(--bd);border-radius:10px;padding:2px 8px;margin:2px 4px 2px 0;background:var(--card)}
+.tip{font-size:13px;color:var(--sub);margin:8px 0 2px}
+h1{font-size:23px;color:var(--pri);letter-spacing:-.5px;margin:6px 0 4px}
+body{padding:14px 14px 28px}
+#tabs{background:var(--card);padding:4px;border-radius:14px;box-shadow:0 2px 10px rgba(58,79,155,.08)}
+#tabs button{border:0;background:transparent;border-radius:11px;padding:10px 0;font-weight:700}
+#tabs button.on{background:var(--pri);color:#fff}
+#loc{background:var(--pri);color:#fff;border:0;border-radius:14px;font-weight:700;padding:13px}
+#wrap{border-color:transparent;border-radius:16px;box-shadow:0 2px 12px rgba(58,79,155,.1)}
+#card,.bc{border-color:transparent;border-radius:16px;box-shadow:0 2px 10px rgba(58,79,155,.08)}
+#flt button{font-weight:600}
+.tag{background:#eef1fb;border:0;color:var(--pri);font-weight:600}
+h1{font-family:Jua,"Apple SD Gothic Neo",sans-serif;font-weight:400}
+.bd{font-family:Jua,"Apple SD Gothic Neo",sans-serif;font-size:11px;white-space:nowrap;flex-basis:74px}
+.ic{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.2em;margin-right:5px;flex:none}
+#tabs button .ic{margin-right:4px}
+.bd i{height:48px;display:flex;align-items:center;justify-content:center;color:var(--tx);font:700 32px/1 Fredoka,Jua,"Arial Rounded MT Bold",ui-rounded,sans-serif;font-style:normal;margin:2px 0 6px}
+.bd.on{box-shadow:0 2px 10px rgba(58,79,155,.18)}
+.lg{font-size:12px;color:var(--sub);margin-top:8px;line-height:1.6}
+.b{stroke-width:2}
+</style></head><body>
+<h1>가대 캠퍼스 컵 반납함</h1>
+<div id="tabs"><button class="on" onclick="tab(1)"><span data-ic="map"></span>지도</button><button onclick="tab(2)"><span data-ic="bld"></span>건물별</button><button onclick="tab(3)"><span data-ic="cal"></span>시간표</button></div>
+<div id="t1">
+<button id="loc"><span data-ic="pin"></span>내 위치에서 가장 가까운 반납함 찾기</button>
+<div class="row" id="flt"></div>
+<div id="wrap"><svg id="map" viewBox="0 250 1823 980"></svg></div>
+<div class="lg"><span data-ic="sq"></span>일반 · <span data-ic="star"></span>QR(마일리지) · <span data-ic="tri"></span>음료수거함 · <span data-ic="circ"></span>텀블러 세척기<br>핀 테두리 색: <span data-ic="ok"></span>여유 · <span data-ic="mid"></span>보통 · <span data-ic="full"></span>가득 참 (학생 제보)</div>
+<div id="card"><span class="m">지도의 핀을 눌러 보세요.</span></div>
+</div>
+<div id="t2" hidden><div class="m" style="margin-bottom:4px">건물을 눌러 그 안의 반납함을 확인하세요</div><div id="strip"></div><div id="bdet"></div></div>
+<div id="t3" hidden><div class="bc"><b><span data-ic="cal"></span>내 시간표로 추천받기</b><div class="m" style="margin:4px 0 8px"><b>시간표 캡처 방법</b><br>① <a href="https://uportal.catholic.ac.kr/portal/main.do" target="_blank" rel="noopener" style="color:var(--pri)">트리니티</a> 접속<br>② 학사정보 › 수업/성적 › 개인시간표<br>③ 수강학기를 선택하고 [검색] 클릭<br>④ 나온 시간표 화면을 캡처해서 아래에 올려주세요.<br><br> 수업 사이 이동 경로에서 가장 덜 돌아가는 반납함을 알려드려요. 이미지는 저장되지 않아요.</div><input type="file" id="tf" accept="image/*" hidden><button id="tup" class="on" style="width:100%;border-radius:10px;padding:10px"><span data-ic="cam"></span>시간표 캡처 올리기</button><div id="tmsg" class="m" style="margin-top:8px"></div></div><div id="tres"></div></div>
+<script>
+// ---- 픽토그램 (직접 그린 아이콘) ----
+const IP={
+map:'<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>',
+bld:'<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>',
+cal:'<rect x="3" y="5" width="18" height="16" rx="3.5"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+pin:'<path d="M12 21s-6-5.6-6-10a6 6 0 1112 0c0 4.4-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>',
+cam:'<rect x="3" y="7" width="18" height="13" rx="3.5"/><circle cx="12" cy="13.5" r="3.3"/><path d="M8.5 7l1.4-2.5h4.2L15.5 7"/>',
+cup:'<path d="M7 8h10l-1.3 12H8.3z"/><path d="M6 8h12M8.5 4.5h7V8h-7z"/>',
+warn:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.3v.1"/>',
+chk:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>',
+alt:'<circle cx="12" cy="12" r="9"/><path d="M8 12h8M13 9l3 3-3 3"/>'};
+function I(n){
+const F={sq:`<rect x="4" y="4" width="16" height="16" rx="4" fill="${COL.G}" stroke="none"/>`,
+star:`<polygon points="${star(12,12.5,10)}" fill="${COL.Q}" stroke="${COL.Q}" stroke-width="1.5"/>`,
+tri:`<path d="M12 4l9 16H3z" fill="${COL.D}" stroke="${COL.D}" stroke-width="2"/>`,
+circ:`<circle cx="12" cy="12" r="8" fill="${COL.W}" stroke="none"/>`,
+ok:'<circle cx="12" cy="12" r="7" fill="#2e9e4f" stroke="none"/>',mid:'<circle cx="12" cy="12" r="7" fill="#f2a100" stroke="none"/>',full:'<circle cx="12" cy="12" r="7" fill="#e53935" stroke="none"/>'};
+return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${F[n]||IP[n]||""}</svg>`}
+
+// 건물 (지도 좌표)
+const BLD=[["김수환관",60,940,290,150],["안드레아관",360,900,330,170],["니콜스관",400,820,300,90],["다솔관",440,560,230,140],["학생미래인재관",700,640,420,140],["미카엘관",780,470,230,80],["중앙도서관",1040,450,250,100],["약학관",1150,310,150,120],["성심관",1440,300,110,100],["콘서트홀",1470,500,230,130]];
+// [id,종류,x,y,건물,위치설명]  종류: G일반 Q QR D음료수거함 W세척기
+const P=[
+["G1","G",298,1095,"김수환관","1층"],["G2","G",313,1023,"김수환관","식당 앞"],["G3","G",385,1073,"김수환관","1층"],
+["G4","G",228,928,"김수환관","기숙사 로비"],["G5","G",438,929,"안드레아관",""],["G6","G",654,872,"니콜스관","4층"],
+["G7","G",699,843,"니콜스관","1층"],["G8","G",618,683,"다솔관","2층"],["G9","G",822,711,"학생미래인재관","1층"],
+["G10","G",876,728,"학생미래인재관","2층"],["G11","G",1495,346,"성심관","2층 화장실 앞 (로비가 2층)"],
+["G12","G",823,499,"미카엘관","1층"],["G13","G",1180,399,"약학관","1층"],["G14","G",1561,578,"콘서트홀","로비"],
+["Q1","Q",232,1023,"김수환관","식당"],["Q2","Q",344,1103,"김수환관",""],["Q3","Q",378,1025,"김수환관","2층"],
+["Q4","Q",186,929,"김수환관","기숙사 로비"],["Q5","Q",574,870,"니콜스관","4층"],["Q6","Q",952,726,"학생미래인재관","2층 카페 맞은편"],
+["Q7","Q",895,501,"미카엘관","우리은행 ATM 옆"],["Q8","Q",1058,503,"중앙도서관","2층"],["Q9","Q",1205,505,"중앙도서관","2층"],
+["음료수거함","D",272,1023,"김수환관","식당 앞"],["음료수거함","D",615,871,"니콜스관","4층"],["음료수거함","D",911,730,"학생미래인재관","2층"],
+["텀블러 세척기","W",187,1024,"김수환관","식당"],["텀블러 세척기","W",1017,501,"중앙도서관","2층"]];
+const COL={G:"#e53935",Q:"#2f6fe0",D:"#2e9e4f",W:"#f2c200"};
+const NAME={G:"일반반납함",Q:"QR반납함 (마일리지)",D:"음료수거함 (잔여 음료 비우는 곳)",W:"텀블러 세척기"};
+// GPS 보정용: 지도 모서리의 실제 위도/경도 (임시값 → 실제 좌표로 교체 필요)
+const GEO={latTop:37.4893,latBot:37.4838,lngL:126.7985,lngR:126.8075,x0:0,x1:1823,y0:250,y1:1230};
+let sel=null,filt="ALL",me=null,ST={};
+try{ST=JSON.parse(localStorage.getItem("cupst")||"{}")}catch(e){}
+const svg=document.getElementById("map"),NS="http://www.w3.org/2000/svg";
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
+function star(x,y,r){let s="";for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,q=i%2?r*.45:r;s+=(x+q*Math.cos(a)).toFixed(1)+","+(y+q*Math.sin(a)).toFixed(1)+" "}return s}
+const SC={ok:"#2e9e4f",mid:"#f2a100",full:"#e53935"};
+function draw(){
+svg.innerHTML="";
+BLD.forEach(b=>{el("rect",{x:b[1],y:b[2],width:b[3],height:b[4],rx:10,class:"b"});
+const t=el("text",{x:b[1]+b[3]/2,y:b[2]+b[4]/2+9,class:"bt"});t.textContent=b[0]});
+P.forEach((p,i)=>{
+if(filt!=="ALL"&&p[1]!==filt)return;
+const g=el("g",{style:"cursor:pointer"}),[id,k,x,y]=p;
+if(sel===i)el("circle",{cx:x,cy:y,r:36,fill:"none",stroke:"#3b4fa3","stroke-width":6},g);
+const s=ST[id];
+const stroke=s&&(k==="G"||k==="Q")?SC[s.v]:"#fff";
+if(k==="Q")el("polygon",{points:star(x,y,30),fill:COL.Q,stroke,"stroke-width":5},g);
+else if(k==="G")el("rect",{x:x-20,y:y-20,width:40,height:40,rx:4,fill:COL.G,stroke,"stroke-width":5},g);
+else if(k==="D")el("polygon",{points:`${x},${y-24} ${x+24},${y+18} ${x-24},${y+18}`,fill:COL.D,stroke:"#fff","stroke-width":4},g);
+else el("circle",{cx:x,cy:y,r:20,fill:COL.W,stroke:"#fff","stroke-width":4},g);
+
+const hit=el("circle",{cx:x,cy:y,r:42,fill:"transparent"},g);
+g.addEventListener("click",()=>pick(i,true));
+});
+if(me)el("circle",{cx:me.x,cy:me.y,r:18,fill:"#00b0ff",stroke:"#fff","stroke-width":6});
+}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+function metersPerUnit(){const mx=(GEO.lngR-GEO.lngL)*111320*Math.cos(37.487*Math.PI/180);return mx/(GEO.x1-GEO.x0)}
+function pick(i,center){
+sel=i;draw();const p=P[i],[id,k,x,y,b,n]=p,w=document.getElementById("wrap");
+if(center){const f=1100/1823;w.scrollTo({left:x*f-w.clientWidth/2,top:(y-250)*f-w.clientHeight/2,behavior:"smooth"})}
+let h=`<h2>${k==="G"||k==="Q"?b+(n?" · "+n:""):id}</h2><div class="m">${k==="G"||k==="Q"?NAME[k]:b+(n?" · "+n:"")}</div>`;
+if(me){const m=Math.round(dist(me,{x,y})*metersPerUnit());h+=`<div class="m">내 위치에서 직선 약 ${m}m (도보 약 ${Math.max(1,Math.round(m/70))}분)</div>`}
+if(k==="G"||k==="Q"){
+const s=ST[id];h+=`<div class="m" style="margin-top:6px">${s?"최근 제보: "+({ok:"여유",mid:"보통",full:"가득 참"})[s.v]+" ("+s.t+")":"아직 제보가 없어요"}</div>
+<div class="st"><button onclick="rep('${id}','ok')">${I("ok")}여유</button> <button onclick="rep('${id}','mid')">${I("mid")}보통</button> <button onclick="rep('${id}','full')">${I("full")}가득 참</button></div>`;
+if(k==="G")h+=`<div class="m" style="margin-top:6px">뚜껑·컵홀더를 분리하고 남은 음료는 비운 뒤 반납해 주세요.</div>`}
+document.getElementById("card").innerHTML=h}
+function rep(id,v){const d=new Date();ST[id]={v,t:(d.getMonth()+1)+"/"+d.getDate()+" "+d.getHours()+":"+String(d.getMinutes()).padStart(2,"0")};
+try{localStorage.setItem("cupst",JSON.stringify(ST))}catch(e){}if(sel!==null)pick(sel,false);else draw();renderB()}
+// 필터
+[["ALL","전체"],["G","일반"],["Q","QR"],["D","음료수거함"],["W","세척기"]].forEach(([k,l])=>{
+const b=document.createElement("button");b.textContent=l;if(k==="ALL")b.className="on";
+b.onclick=()=>{filt=k;[...document.querySelectorAll("#flt button")].forEach(x=>x.className="");b.className="on";draw()};
+document.getElementById("flt").appendChild(b)});
+// 내 위치
+document.getElementById("loc").onclick=()=>{
+const c=document.getElementById("card");
+if(!navigator.geolocation){c.textContent="이 기기에서는 위치 기능을 쓸 수 없어요.";return}
+c.textContent="위치 확인 중...";
+navigator.geolocation.getCurrentPosition(pos=>{
+const{latitude:la,longitude:lo}=pos.coords;
+me={x:GEO.x0+(lo-GEO.lngL)/(GEO.lngR-GEO.lngL)*(GEO.x1-GEO.x0),y:GEO.y0+(GEO.latTop-la)/(GEO.latTop-GEO.latBot)*(GEO.y1-GEO.y0)};
+let bi=-1,bd=1e9;P.forEach((p,i)=>{if(p[1]!=="G"&&p[1]!=="Q")return;if(filt==="G"&&p[1]!=="G"||filt==="Q"&&p[1]!=="Q")return;
+const d=dist(me,{x:p[2],y:p[3]});if(d<bd){bd=d;bi=i}});
+if(bd*metersPerUnit()>1500){draw();c.textContent="캠퍼스 밖에 계신 것 같아요. 핀을 눌러 위치를 확인해 보세요.";return}
+pick(bi,true)},()=>{c.textContent="위치 권한이 거부되었어요. 지도에서 핀을 직접 눌러 확인해 주세요."},{enableHighAccuracy:true,timeout:10000})};
+// ---- 탭 / 건물별 ----
+const BC={"김수환관":"#d99a4e","안드레아관":"#e08c78","니콜스관":"#c4547a","다솔관":"#8a5a9a","학생미래인재관":"#e2a0b4","미카엘관":"#7e57a8","중앙도서관":"#4f8f86","약학관":"#5c7bc4","성심관":"#c47a4a","콘서트홀":"#6a8a5a"};
+const LT={"김수환관":"K","니콜스관":"N","다솔관":"D","약학관":"NP","성심관":"SH","콘서트홀":"CH","안드레아관":"A","학생미래인재관":"B","미카엘관":"T","중앙도서관":"L"};
+let bsel="김수환관";
+function tab(n){["t1","t2","t3"].forEach((t,i)=>{document.getElementById(t).hidden=i+1!==n});[...document.querySelectorAll("#tabs button")].forEach((b,i)=>b.className=i+1===n?"on":"")}
+function stTxt(id){const s=ST[id];return s?"최근 제보: "+({ok:"여유",mid:"보통",full:"가득 참"})[s.v]+" ("+s.t+")":"아직 제보가 없어요"}
+function renderB(){
+const isBin=p=>p[1]==="G"||p[1]==="Q";
+document.getElementById("strip").innerHTML=BLD.map(b=>{const n=b[0],c=P.filter(p=>p[4]===n&&isBin(p)).length;
+return `<div class="bd${n===bsel?" on":""}" onclick="bsel='${n}';renderB()"><i>${LT[n]||n[0]}</i>${n==="중앙도서관"?"도서관":n.replace("관","")}<small>${c}곳</small></div>`}).join("");
+const ix=P.map((p,i)=>i).filter(i=>P[i][4]===bsel),bins=ix.filter(i=>isBin(P[i])),oth=ix.filter(i=>!isBin(P[i]));
+const g=bins.filter(i=>P[i][1]==="G").length,q=bins.length-g,hasD=oth.some(i=>P[i][1]==="D"),hasW=oth.some(i=>P[i][1]==="W");
+let h=`<div style="margin:4px 0"><b>${bsel}</b> · 반납함 ${bins.length}곳</div><div>`+
+(g?`<span class="tag">${I("sq")}일반 ${g}</span>`:"")+(q?`<span class="tag">${I("star")}QR ${q}</span>`:"")+(hasD?`<span class="tag">${I("tri")}음료수거함</span>`:"")+(hasW?`<span class="tag">${I("circ")}세척기</span>`:"")+"</div>";
+h+=`<div class="tip" style="font-weight:700;color:${hasD?"#2e9e4f":"#e53935"}">이 건물에는 음료수거함이 ${hasD?"있어요":"없어요"}.</div>`;
+bins.forEach(i=>{const [id,k,x,y,b,n]=P[i];
+h+=`<div class="bc"><b>${NAME[k]}</b><div class="m">${n||"위치 상세 준비 중"}</div><div class="m" style="margin-top:4px">${stTxt(id)}</div>
+<div class="st"><button onclick="rep('${id}','ok')">${I("ok")}여유</button> <button onclick="rep('${id}','mid')">${I("mid")}보통</button> <button onclick="rep('${id}','full')">${I("full")}가득 참</button> <button onclick="tab(1);pick(${i},true)">${I("pin")}지도에서 보기</button></div></div>`});
+if(!bins.length)h+=`<div class="bc m">이 건물에는 등록된 반납함이 없어요.</div>`;
+oth.forEach(i=>{const [id,k,x,y,b,n]=P[i];h+=`<div class="bc"><b style="color:${COL[k]}">${id}</b><div class="m">${n}</div></div>`});
+document.getElementById("bdet").innerHTML=h}
+// ---- 시간표 추천 ----
+// 강의실 알파벳 → [건물명, 지도 x, y]. 위치를 모르면 null (값 수정 가능)
+const BX={K:["김수환관",230,1000],N:["니콜스관",555,840],D:["다솔관",555,640],V:["비르투스관",455,778],BA:["밤비노관",600,775],SH:["성심관",1495,340],B:["학생미래인재관",805,676],NP:["약학관",1180,400],CH:["콘서트홀",1593,530],M:["마리아관",680,890],A:["안드레아관",515,968],T:["미카엘관",945,480],L:["중앙도서관",1140,478]};
+const DAYS=["월","화","수","목","금","토"];
+const tm=s=>{const m=/(\d{1,2}):(\d{2})/.exec(s||"");return m?+m[1]*60+ +m[2]:null};
+const PROMPT=`이 이미지는 대학교 개인시간표 화면입니다. 수업이 적힌 칸만 읽어 JSON 배열로만 답하세요.
+각 항목: {"day":"월|화|수|목|금|토","start":"HH:MM","end":"HH:MM","name":"과목명","room":"강의실 코드 또는 null"}
+- 같은 요일에 연속된 교시의 같은 과목은 하나로 합치고, start는 첫 교시 시작, end는 마지막 교시 종료 시각으로 하세요.
+- 시간 열에 괄호 시간이 있으면(야간시간) 괄호 안 시간을 쓰세요.
+- 강의실 코드는 알파벳+숫자(예: N319, D405). 강의실이 없는 수업(온라인)은 room을 null로 하세요.`;
+function recFor(A,B,gap){
+const mpu=metersPerUnit(),dAB=dist(A,B);
+return P.map((p,i)=>({p,i,k:p[1]})).filter(o=>o.k==="G"||o.k==="Q").map(o=>{
+const q={x:o.p[2],y:o.p[3]},t=dist(A,q)+dist(q,B),full=!!(ST[o.p[0]]&&ST[o.p[0]].v==="full"),walk=t*mpu/70;
+return{...o,extra:(t-dAB)*mpu,walk,full,score:(t-dAB)*mpu+(full?200:0)+(walk>gap?300:0)}}).sort((a,b)=>a.score-b.score).slice(0,2)}
+async function runTT(file){
+const msg=document.getElementById("tmsg"),out=document.getElementById("tres");out.innerHTML="";
+let smp=null;try{smp=typeof claude!=="undefined"?await claude.use("sample"):null}catch(e){}
+if(!smp){msg.textContent="이 기능은 claude.ai에서 페이지를 열었을 때만 사용할 수 있어요.";return}
+msg.textContent="시간표를 읽는 중... (10~30초)";
+let rows;
+try{rows=await smp.json(PROMPT,{images:[file],modelTier:"default"})}catch(e){msg.textContent="시간표를 읽지 못했어요. "+(e&&e.code==="not_granted"?"Claude 사용을 허용해 주세요.":"캡처 이미지를 확인하고 다시 시도해 주세요.");return}
+const cls=(Array.isArray(rows)?rows:[]).map(r=>{const m=/^([A-Za-z]{1,2})\s*-?(\d{2,4})/.exec(r.room||"");return{day:r.day,name:r.name,s:tm(r.start),e:tm(r.end),start:r.start,end:r.end,room:r.room,L:m?m[1].toUpperCase():null,fl:m?Math.floor(+m[2]/100):null}}).filter(c=>DAYS.includes(c.day)&&c.s!=null&&c.e!=null);
+if(!cls.length){msg.textContent="시간표에서 수업을 찾지 못했어요. 캡처가 선명한지 확인해 주세요.";return}
+let h="",n=0;const unk=new Set();
+DAYS.forEach(d=>{const L=cls.filter(c=>c.day===d).sort((a,b)=>a.s-b.s);let dh="";
+for(let j=0;j<L.length-1;j++){const a=L[j],b=L[j+1];if(!a.L||!b.L||b.s<a.e)continue;
+const X=BX[a.L],Y=BX[b.L];if(!X||!X[1]){unk.add(a.L);continue}if(!Y||!Y[1]){unk.add(b.L);continue}
+const A={x:X[1],y:X[2]},B={x:Y[1],y:Y[2]},gap=b.s-a.e,direct=Math.ceil(dist(A,B)*metersPerUnit()/70),rec=recFor(A,B,gap);n++;
+dh+=`<div class="bc"><b>${a.name} → ${b.name}</b><div class="m">${X[0]}${a.fl?" "+a.fl+"층":""} (${a.end} 종료) → ${Y[0]}${b.fl?" "+b.fl+"층":""} (${b.start} 시작)<br>쉬는 시간 ${gap}분 · 바로 이동 시 약 ${direct}분</div>`+
+rec.map((r,q)=>{const p=r.p,via=Math.ceil(r.walk);return `<div style="margin-top:8px">${q?I("alt")+"대안":I("chk")+"추천"} <b>${p[4]}${p[5]?" · "+p[5]:""}</b> <span class="m">${NAME[r.k]}</span><div class="m">돌아가는 거리 약 ${Math.round(r.extra)}m · 반납 경유 도보 약 ${via}분${via>gap?" · "+I("warn")+"시간이 빠듯해요":""}${r.full?" · 최근 '가득 참' 제보 있음":""}</div><button style="margin-top:4px" onclick="tab(1);pick(${r.i},true)">${I("pin")}지도에서 보기</button></div>`}).join("")+"</div>"}
+if(dh)h+=`<h3 style="font-size:15px;margin:14px 0 0">${d}요일</h3>`+dh});
+msg.textContent=`수업 ${cls.length}개를 읽었고, 이동 구간 ${n}곳을 분석했어요.`+(unk.size?` 위치를 모르는 건물(${[...unk].map(l=>BX[l]?BX[l][0]:l).join(", ")})이 포함된 구간은 제외했어요.`:"");
+out.innerHTML=h+`<div class="tip">읽은 수업: ${cls.map(c=>`${c.day} ${c.start} ${c.name}(${c.room||"온라인"})`).join(" / ")}</div>`}
+document.getElementById("tup").onclick=()=>document.getElementById("tf").click();
+document.getElementById("tf").onchange=e=>{const f=e.target.files[0];if(f)runTT(f);e.target.value=""};
+renderB();
+draw();
+document.querySelectorAll("[data-ic]").forEach(e=>{e.innerHTML=I(e.dataset.ic)});
+(function(){const w=document.getElementById("wrap"),f=1100/1823;w.scrollLeft=Math.max(0,450*f-w.clientWidth/2);w.scrollTop=Math.max(0,(930-250)*f-w.clientHeight/2)})();
+</script></body></html>
