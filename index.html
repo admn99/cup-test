@@ -50,18 +50,30 @@ h1{font-family:Jua,"Apple SD Gothic Neo",sans-serif;font-weight:400}
 .bd.on{box-shadow:0 2px 10px rgba(58,79,155,.18)}
 .lg{font-size:12px;color:var(--sub);margin-top:8px;line-height:1.6}
 .b{stroke-width:2}
+.fr{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.fr input,.fr select{font:inherit;font-size:14px;padding:9px 8px;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);min-width:0;flex:1}
+.ti{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--bd);font-size:13px}
+.ti button{padding:3px 10px;font-size:12px}
+#wrap{touch-action:pan-x pan-y}
+.pin{cursor:pointer;filter:drop-shadow(0 2px 3px rgba(20,30,60,.35))}
+.zb{position:absolute;right:10px;top:10px;z-index:5;display:flex;flex-direction:column;gap:6px}
+.zb button{width:38px;height:38px;border-radius:12px;padding:0;font-size:22px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.18)}
 </style></head><body>
 <h1>가대 캠퍼스 컵 반납함</h1>
-<div id="tabs"><button class="on" onclick="tab(1)"><span data-ic="map"></span>지도</button><button onclick="tab(2)"><span data-ic="bld"></span>건물별</button><button onclick="tab(3)"><span data-ic="cal"></span>시간표</button></div>
+<div id="tabs"><button class="on" onclick="tab(1)"><span data-ic="map"></span>지도</button><button onclick="tab(2)"><span data-ic="bld"></span>건물</button><button onclick="tab(3)"><span data-ic="cal"></span>시간표</button></div>
 <div id="t1">
 <button id="loc"><span data-ic="pin"></span>내 위치에서 가장 가까운 반납함 찾기</button>
 <div class="row" id="flt"></div>
-<div id="wrap"><svg id="map" viewBox="0 250 1823 980"></svg></div>
-<div class="lg"><span data-ic="sq"></span>일반 · <span data-ic="star"></span>QR(마일리지) · <span data-ic="tri"></span>음료수거함 · <span data-ic="circ"></span>텀블러 세척기<br>핀 테두리 색: <span data-ic="ok"></span>여유 · <span data-ic="mid"></span>보통 · <span data-ic="full"></span>가득 참 (학생 제보)</div>
+<div style="position:relative"><div class="zb"><button id="zi" aria-label="확대">+</button><button id="zo" aria-label="축소">−</button></div><div id="wrap"><svg id="map" viewBox="0 250 1823 980"></svg></div></div>
+<div class="lg"><span data-ic="sq"></span>일반 · <span data-ic="star"></span>QR · <span data-ic="tri"></span>음료수거함 · <span data-ic="circ"></span>텀블러 세척기<br>일반·QR 핀 색: <span data-ic="ok"></span>여유 · <span data-ic="mid"></span>보통 · <span data-ic="full"></span>가득 참 · <span data-ic="none"></span>제보 없음</div>
 <div id="card"><span class="m">지도의 핀을 눌러 보세요.</span></div>
 </div>
 <div id="t2" hidden><div class="m" style="margin-bottom:4px">건물을 눌러 그 안의 반납함을 확인하세요</div><div id="strip"></div><div id="bdet"></div></div>
-<div id="t3" hidden><div class="bc"><b><span data-ic="cal"></span>내 시간표로 추천받기</b><div class="m" style="margin:4px 0 8px"><b>시간표 캡처 방법</b><br>① <a href="https://uportal.catholic.ac.kr/portal/main.do" target="_blank" rel="noopener" style="color:var(--pri)">트리니티</a> 접속<br>② 학사정보 › 수업/성적 › 개인시간표<br>③ 수강학기를 선택하고 [검색] 클릭<br>④ 나온 시간표 화면을 캡처해서 아래에 올려주세요.<br><br> 수업 사이 이동 경로에서 가장 덜 돌아가는 반납함을 알려드려요. 이미지는 저장되지 않아요.</div><input type="file" id="tf" accept="image/*" hidden><button id="tup" class="on" style="width:100%;border-radius:10px;padding:10px"><span data-ic="cam"></span>시간표 캡처 올리기</button><div id="tmsg" class="m" style="margin-top:8px"></div></div><div id="tres"></div></div>
+<div id="t3" hidden><div class="bc"><b><span data-ic="cal"></span>내 시간표로 추천받기</b><div class="m" style="margin:4px 0 10px">수업 사이 이동 경로에서 가장 덜 돌아가는 반납함을 알려드려요. 입력한 내용은 이 기기에만 저장돼요.</div>
+<div class="fr"><select id="fd"><option>월</option><option>화</option><option>수</option><option>목</option><option>금</option><option>토</option></select><input type="time" id="fs" value="09:00"><span class="m">~</span><input type="time" id="fe" value="09:50"></div>
+<div class="fr"><input id="fr" placeholder="강의실 (예: N319)" autocapitalize="characters"><input id="fn" placeholder="과목명 (선택)"></div>
+<button id="tadd" class="on" onclick="addTT()" style="width:100%;border-radius:10px;padding:10px">수업 추가</button><div id="fmsg" class="m" style="color:#e53935;margin-top:6px"></div>
+<div id="tlist"></div><div id="tmsg" class="m" style="margin-top:6px"></div></div><div id="tres"></div></div>
 <script>
 // ---- 픽토그램 (직접 그린 아이콘) ----
 const IP={
@@ -75,11 +87,11 @@ warn:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.3v.1"/>',
 chk:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>',
 alt:'<circle cx="12" cy="12" r="9"/><path d="M8 12h8M13 9l3 3-3 3"/>'};
 function I(n){
-const F={sq:`<rect x="4" y="4" width="16" height="16" rx="4" fill="${COL.G}" stroke="none"/>`,
-star:`<polygon points="${star(12,12.5,10)}" fill="${COL.Q}" stroke="${COL.Q}" stroke-width="1.5"/>`,
-tri:`<path d="M12 4l9 16H3z" fill="${COL.D}" stroke="${COL.D}" stroke-width="2"/>`,
-circ:`<circle cx="12" cy="12" r="8" fill="${COL.W}" stroke="none"/>`,
-ok:'<circle cx="12" cy="12" r="7" fill="#2e9e4f" stroke="none"/>',mid:'<circle cx="12" cy="12" r="7" fill="#f2a100" stroke="none"/>',full:'<circle cx="12" cy="12" r="7" fill="#e53935" stroke="none"/>'};
+const F={sq:`<circle cx="12" cy="12" r="11" fill="${NAVY}" stroke="none"/><g transform="translate(12 12) scale(.6) translate(-12 -12)" stroke="#fff" stroke-width="2.6">${IC.G}</g>`,
+star:`<circle cx="12" cy="12" r="11" fill="${NAVY}" stroke="none"/><g transform="translate(12 12) scale(.6) translate(-12 -12)" stroke="#fff" stroke-width="2.6">${IC.Q}</g>`,
+tri:`<circle cx="12" cy="12" r="11" fill="${NAVY}" stroke="none"/><g transform="translate(12 12) scale(.6) translate(-12 -12)" stroke="#fff" stroke-width="2.6">${IC.D}</g>`,
+circ:`<circle cx="12" cy="12" r="11" fill="${NAVY}" stroke="none"/><g transform="translate(12 12) scale(.6) translate(-12 -12)" stroke="#fff" stroke-width="2.6">${IC.W}</g>`,
+ok:'<circle cx="12" cy="12" r="7" fill="#2e9e4f" stroke="none"/>',mid:'<circle cx="12" cy="12" r="7" fill="#f2a100" stroke="none"/>',full:'<circle cx="12" cy="12" r="7" fill="#e53935" stroke="none"/>',none:'<circle cx="12" cy="12" r="7" fill="#8b93a7" stroke="none"/>'};
 return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${F[n]||IP[n]||""}</svg>`}
 
 // 건물 (지도 좌표)
@@ -97,43 +109,47 @@ const P=[
 ["음료수거함","D",272,1023,"김수환관","식당 앞"],["음료수거함","D",615,871,"니콜스관","4층"],["음료수거함","D",911,730,"학생미래인재관","2층"],
 ["텀블러 세척기","W",187,1024,"김수환관","식당"],["텀블러 세척기","W",1017,501,"중앙도서관","2층"]];
 const COL={G:"#e53935",Q:"#2f6fe0",D:"#2e9e4f",W:"#f2c200"};
-const NAME={G:"일반반납함",Q:"QR반납함 (마일리지)",D:"음료수거함 (잔여 음료 비우는 곳)",W:"텀블러 세척기"};
+const NAME={G:"일반반납함",Q:"QR반납함",D:"음료수거함 (잔여 음료 비우는 곳)",W:"텀블러 세척기"};
 // GPS 보정용: 지도 모서리의 실제 위도/경도 (임시값 → 실제 좌표로 교체 필요)
-const GEO={latTop:37.4893,latBot:37.4838,lngL:126.7985,lngR:126.8075,x0:0,x1:1823,y0:250,y1:1230};
+const GEO={latTop:37.487979,latBot:37.484006,lngL:126.794232,lngR:126.803522,x0:0,x1:1823,y0:250,y1:1230};
 let sel=null,filt="ALL",me=null,ST={};
 try{ST=JSON.parse(localStorage.getItem("cupst")||"{}")}catch(e){}
 const svg=document.getElementById("map"),NS="http://www.w3.org/2000/svg";
 function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
 function star(x,y,r){let s="";for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,q=i%2?r*.45:r;s+=(x+q*Math.cos(a)).toFixed(1)+","+(y+q*Math.sin(a)).toFixed(1)+" "}return s}
 const SC={ok:"#2e9e4f",mid:"#f2a100",full:"#e53935"};
+const OUT={};
+const NAVY="#3a4f9b",STC={ok:"#2e9e4f",mid:"#f2a100",full:"#e53935",none:"#8b93a7"};
+const IC={
+G:'<path d="M7 8h10l-1.3 12H8.3z"/><path d="M6 8h12M8.5 4.5h7V8h-7z"/>',
+Q:'<rect x="4.5" y="4.5" width="6" height="6" rx="1.3"/><rect x="13.5" y="4.5" width="6" height="6" rx="1.3"/><rect x="4.5" y="13.5" width="6" height="6" rx="1.3"/><path d="M14 14h2v2M19.5 14v.1M14 19.5h.1M17.5 17.5h2v2"/>',
+D:'<path d="M12 3.8c3.2 3.8 5.8 6.6 5.8 9.8a5.8 5.8 0 01-11.6 0c0-3.2 2.6-6 5.8-9.8z"/>',
+W:'<circle cx="8.5" cy="14.5" r="3.6"/><circle cx="16" cy="9" r="2.7"/><circle cx="16" cy="17.5" r="1.8"/>'};
+const ico=t=>`<g transform="translate(-13.5 -13.5) scale(1.12)" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${IC[t]}</g>`;
+const stOf=p=>{if(OUT[p[0]])return "none";const s=ST[p[0]];return s&&(p[1]==="G"||p[1]==="Q")?s.v:"none"};
+const pinSvg=p=>`<circle r="23" fill="${p[1]==="G"||p[1]==="Q"?STC[stOf(p)]:NAVY}" stroke="#fff" stroke-width="4"/>${ico(p[1])}`;
+let PT=[];
+(function(){PT=P.map(p=>({x:p[2],y:p[3]}));for(let it=0;it<60;it++)for(let i=0;i<PT.length;i++)for(let j=i+1;j<PT.length;j++){let dx=PT[j].x-PT[i].x,dy=PT[j].y-PT[i].y,d=Math.hypot(dx,dy);if(d<54){if(d<1){dx=1;dy=0;d=1}const k=(54-d)/2/d;PT[i].x-=dx*k;PT[i].y-=dy*k;PT[j].x+=dx*k;PT[j].y+=dy*k}}})();
+function selMark(i){const p=P[i],q=PT[i],tx=p[4]+(p[5]?" · "+p[5]:""),w=tx.length*25+44;
+return `<g class="pin" data-i="${i}" transform="translate(${q.x} ${q.y})" style="filter:drop-shadow(0 6px 8px rgba(20,30,60,.5))"><rect x="${-w/2}" y="-104" width="${w}" height="48" rx="24" fill="#fff"/><polygon points="-11,-56 11,-56 0,-42" fill="#fff"/><text x="0" y="-72" text-anchor="middle" font-size="24" font-weight="700" fill="#1e2433">${tx}</text><g transform="scale(1.45)">${pinSvg(p)}</g></g>`}
 function draw(){
-svg.innerHTML="";
-BLD.forEach(b=>{el("rect",{x:b[1],y:b[2],width:b[3],height:b[4],rx:10,class:"b"});
-const t=el("text",{x:b[1]+b[3]/2,y:b[2]+b[4]/2+9,class:"bt"});t.textContent=b[0]});
-P.forEach((p,i)=>{
-if(filt!=="ALL"&&p[1]!==filt)return;
-const g=el("g",{style:"cursor:pointer"}),[id,k,x,y]=p;
-if(sel===i)el("circle",{cx:x,cy:y,r:36,fill:"none",stroke:"#3b4fa3","stroke-width":6},g);
-const s=ST[id];
-const stroke=s&&(k==="G"||k==="Q")?SC[s.v]:"#fff";
-if(k==="Q")el("polygon",{points:star(x,y,30),fill:COL.Q,stroke,"stroke-width":5},g);
-else if(k==="G")el("rect",{x:x-20,y:y-20,width:40,height:40,rx:4,fill:COL.G,stroke,"stroke-width":5},g);
-else if(k==="D")el("polygon",{points:`${x},${y-24} ${x+24},${y+18} ${x-24},${y+18}`,fill:COL.D,stroke:"#fff","stroke-width":4},g);
-else el("circle",{cx:x,cy:y,r:20,fill:COL.W,stroke:"#fff","stroke-width":4},g);
-
-const hit=el("circle",{cx:x,cy:y,r:42,fill:"transparent"},g);
-g.addEventListener("click",()=>pick(i,true));
-});
-if(me)el("circle",{cx:me.x,cy:me.y,r:18,fill:"#00b0ff",stroke:"#fff","stroke-width":6});
-}
+let h="";
+BLD.forEach(b=>{h+=`<rect class="b" x="${b[1]}" y="${b[2]}" width="${b[3]}" height="${b[4]}" rx="10"/><text class="bt" x="${b[1]+b[3]/2}" y="${b[2]+b[4]/2+9}">${b[0]}</text>`});
+const vis=i=>filt==="ALL"||P[i][1]===filt,dim=sel!==null&&vis(sel);
+P.forEach((p,i)=>{if(!vis(i)||i===sel)return;h+=`<g class="pin" data-i="${i}" opacity="${dim?.45:1}" transform="translate(${PT[i].x} ${PT[i].y})">${pinSvg(p)}<circle r="34" fill="transparent"/></g>`});
+if(sel!==null&&vis(sel))h+=selMark(sel);
+if(me)h+=`<circle cx="${me.x}" cy="${me.y}" r="18" fill="#00b0ff" stroke="#fff" stroke-width="6"/>`;
+svg.innerHTML=h;
+svg.querySelectorAll(".pin").forEach(g=>g.onclick=()=>{const i=+g.dataset.i;if(sel===i)deselect();else pick(i,true)})}
+function deselect(){sel=null;draw();document.getElementById("card").innerHTML='<span class="m">지도의 핀을 눌러 보세요.</span>'}
 function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
 function metersPerUnit(){const mx=(GEO.lngR-GEO.lngL)*111320*Math.cos(37.487*Math.PI/180);return mx/(GEO.x1-GEO.x0)}
 function pick(i,center){
 sel=i;draw();const p=P[i],[id,k,x,y,b,n]=p,w=document.getElementById("wrap");
-if(center){const f=1100/1823;w.scrollTo({left:x*f-w.clientWidth/2,top:(y-250)*f-w.clientHeight/2,behavior:"smooth"})}
+if(center){const f=ZW/1823;w.scrollTo({left:PT[i].x*f-w.clientWidth/2,top:(PT[i].y-250)*f-w.clientHeight/2,behavior:"smooth"})}
 let h=`<h2>${k==="G"||k==="Q"?b+(n?" · "+n:""):id}</h2><div class="m">${k==="G"||k==="Q"?NAME[k]:b+(n?" · "+n:"")}</div>`;
 if(me){const m=Math.round(dist(me,{x,y})*metersPerUnit());h+=`<div class="m">내 위치에서 직선 약 ${m}m (도보 약 ${Math.max(1,Math.round(m/70))}분)</div>`}
-if(k==="G"||k==="Q"){
+if(OUT[id]){h+=`<div style="margin-top:6px;font-weight:700;color:#e53935">${OUT[id]}</div>`}else if(k==="G"||k==="Q"){
 const s=ST[id];h+=`<div class="m" style="margin-top:6px">${s?"최근 제보: "+({ok:"여유",mid:"보통",full:"가득 참"})[s.v]+" ("+s.t+")":"아직 제보가 없어요"}</div>
 <div class="st"><button onclick="rep('${id}','ok')">${I("ok")}여유</button> <button onclick="rep('${id}','mid')">${I("mid")}보통</button> <button onclick="rep('${id}','full')">${I("full")}가득 참</button></div>`;
 if(k==="G")h+=`<div class="m" style="margin-top:6px">뚜껑·컵홀더를 분리하고 남은 음료는 비운 뒤 반납해 주세요.</div>`}
@@ -153,7 +169,7 @@ c.textContent="위치 확인 중...";
 navigator.geolocation.getCurrentPosition(pos=>{
 const{latitude:la,longitude:lo}=pos.coords;
 me={x:GEO.x0+(lo-GEO.lngL)/(GEO.lngR-GEO.lngL)*(GEO.x1-GEO.x0),y:GEO.y0+(GEO.latTop-la)/(GEO.latTop-GEO.latBot)*(GEO.y1-GEO.y0)};
-let bi=-1,bd=1e9;P.forEach((p,i)=>{if(p[1]!=="G"&&p[1]!=="Q")return;if(filt==="G"&&p[1]!=="G"||filt==="Q"&&p[1]!=="Q")return;
+let bi=-1,bd=1e9;P.forEach((p,i)=>{if(p[1]!=="G"&&p[1]!=="Q"||OUT[p[0]])return;if(filt==="G"&&p[1]!=="G"||filt==="Q"&&p[1]!=="Q")return;
 const d=dist(me,{x:p[2],y:p[3]});if(d<bd){bd=d;bi=i}});
 if(bd*metersPerUnit()>1500){draw();c.textContent="캠퍼스 밖에 계신 것 같아요. 핀을 눌러 위치를 확인해 보세요.";return}
 pick(bi,true)},()=>{c.textContent="위치 권한이 거부되었어요. 지도에서 핀을 직접 눌러 확인해 주세요."},{enableHighAccuracy:true,timeout:10000})};
@@ -165,16 +181,16 @@ function tab(n){["t1","t2","t3"].forEach((t,i)=>{document.getElementById(t).hidd
 function stTxt(id){const s=ST[id];return s?"최근 제보: "+({ok:"여유",mid:"보통",full:"가득 참"})[s.v]+" ("+s.t+")":"아직 제보가 없어요"}
 function renderB(){
 const isBin=p=>p[1]==="G"||p[1]==="Q";
-document.getElementById("strip").innerHTML=BLD.map(b=>{const n=b[0],c=P.filter(p=>p[4]===n&&isBin(p)).length;
+document.getElementById("strip").innerHTML=BLD.map(b=>{const n=b[0],c=P.filter(p=>p[4]===n&&isBin(p)&&!OUT[p[0]]).length;
 return `<div class="bd${n===bsel?" on":""}" onclick="bsel='${n}';renderB()"><i>${LT[n]||n[0]}</i>${n==="중앙도서관"?"도서관":n.replace("관","")}<small>${c}곳</small></div>`}).join("");
 const ix=P.map((p,i)=>i).filter(i=>P[i][4]===bsel),bins=ix.filter(i=>isBin(P[i])),oth=ix.filter(i=>!isBin(P[i]));
-const g=bins.filter(i=>P[i][1]==="G").length,q=bins.length-g,hasD=oth.some(i=>P[i][1]==="D"),hasW=oth.some(i=>P[i][1]==="W");
-let h=`<div style="margin:4px 0"><b>${bsel}</b> · 반납함 ${bins.length}곳</div><div>`+
+const av=bins.filter(i=>!OUT[P[i][0]]),g=av.filter(i=>P[i][1]==="G").length,q=av.length-g,hasD=oth.some(i=>P[i][1]==="D"),hasW=oth.some(i=>P[i][1]==="W");
+let h=`<div style="margin:4px 0"><b>${bsel}</b> · 반납함 ${av.length}곳</div><div>`+
 (g?`<span class="tag">${I("sq")}일반 ${g}</span>`:"")+(q?`<span class="tag">${I("star")}QR ${q}</span>`:"")+(hasD?`<span class="tag">${I("tri")}음료수거함</span>`:"")+(hasW?`<span class="tag">${I("circ")}세척기</span>`:"")+"</div>";
 h+=`<div class="tip" style="font-weight:700;color:${hasD?"#2e9e4f":"#e53935"}">이 건물에는 음료수거함이 ${hasD?"있어요":"없어요"}.</div>`;
 bins.forEach(i=>{const [id,k,x,y,b,n]=P[i];
-h+=`<div class="bc"><b>${NAME[k]}</b><div class="m">${n||"위치 상세 준비 중"}</div><div class="m" style="margin-top:4px">${stTxt(id)}</div>
-<div class="st"><button onclick="rep('${id}','ok')">${I("ok")}여유</button> <button onclick="rep('${id}','mid')">${I("mid")}보통</button> <button onclick="rep('${id}','full')">${I("full")}가득 참</button> <button onclick="tab(1);pick(${i},true)">${I("pin")}지도에서 보기</button></div></div>`});
+h+=`<div class="bc"><b>${NAME[k]}</b><div class="m">${n||"위치 상세 준비 중"}</div><div class="m" style="margin-top:4px">${OUT[id]?`<span style="color:#e53935;font-weight:700">${OUT[id]}</span>`:stTxt(id)}</div>
+<div class="st">${OUT[id]?"":`<button onclick="rep('${id}','ok')">${I("ok")}여유</button> <button onclick="rep('${id}','mid')">${I("mid")}보통</button> <button onclick="rep('${id}','full')">${I("full")}가득 참</button> `}<button onclick="tab(1);pick(${i},true)">${I("pin")}지도에서 보기</button></div></div>`});
 if(!bins.length)h+=`<div class="bc m">이 건물에는 등록된 반납함이 없어요.</div>`;
 oth.forEach(i=>{const [id,k,x,y,b,n]=P[i];h+=`<div class="bc"><b style="color:${COL[k]}">${id}</b><div class="m">${n}</div></div>`});
 document.getElementById("bdet").innerHTML=h}
@@ -183,25 +199,28 @@ document.getElementById("bdet").innerHTML=h}
 const BX={K:["김수환관",230,1000],N:["니콜스관",555,840],D:["다솔관",555,640],V:["비르투스관",455,778],BA:["밤비노관",600,775],SH:["성심관",1495,340],B:["학생미래인재관",805,676],NP:["약학관",1180,400],CH:["콘서트홀",1593,530],M:["마리아관",680,890],A:["안드레아관",515,968],T:["미카엘관",945,480],L:["중앙도서관",1140,478]};
 const DAYS=["월","화","수","목","금","토"];
 const tm=s=>{const m=/(\d{1,2}):(\d{2})/.exec(s||"");return m?+m[1]*60+ +m[2]:null};
-const PROMPT=`이 이미지는 대학교 개인시간표 화면입니다. 수업이 적힌 칸만 읽어 JSON 배열로만 답하세요.
-각 항목: {"day":"월|화|수|목|금|토","start":"HH:MM","end":"HH:MM","name":"과목명","room":"강의실 코드 또는 null"}
-- 같은 요일에 연속된 교시의 같은 과목은 하나로 합치고, start는 첫 교시 시작, end는 마지막 교시 종료 시각으로 하세요.
-- 시간 열에 괄호 시간이 있으면(야간시간) 괄호 안 시간을 쓰세요.
-- 강의실 코드는 알파벳+숫자(예: N319, D405). 강의실이 없는 수업(온라인)은 room을 null로 하세요.`;
 function recFor(A,B,gap){
 const mpu=metersPerUnit(),dAB=dist(A,B);
-return P.map((p,i)=>({p,i,k:p[1]})).filter(o=>o.k==="G"||o.k==="Q").map(o=>{
+return P.map((p,i)=>({p,i,k:p[1]})).filter(o=>(o.k==="G"||o.k==="Q")&&!OUT[o.p[0]]).map(o=>{
 const q={x:o.p[2],y:o.p[3]},t=dist(A,q)+dist(q,B),full=!!(ST[o.p[0]]&&ST[o.p[0]].v==="full"),walk=t*mpu/70;
 return{...o,extra:(t-dAB)*mpu,walk,full,score:(t-dAB)*mpu+(full?200:0)+(walk>gap?300:0)}}).sort((a,b)=>a.score-b.score).slice(0,2)}
-async function runTT(file){
+let TT=[];try{TT=JSON.parse(localStorage.getItem("cutt")||"[]")}catch(e){}
+function saveTT(){try{localStorage.setItem("cutt",JSON.stringify(TT))}catch(e){}}
+function addTT(){
+const g=id=>document.getElementById(id).value,room=g("fr").trim().toUpperCase().replace(/\s/g,""),s=g("fs"),e=g("fe"),m=document.getElementById("fmsg");
+if(!/^[A-Z]{1,2}\d{2,4}$/.test(room)){m.textContent="강의실을 N319처럼 입력해 주세요.";return}
+if(!s||!e||tm(e)<=tm(s)){m.textContent="시작·종료 시간을 확인해 주세요.";return}
+TT.push({day:g("fd"),start:s,end:e,room,name:g("fn").trim()||room});
+m.textContent="";document.getElementById("fr").value="";document.getElementById("fn").value="";saveTT();renderTT()}
+function delTT(i){TT.splice(i,1);saveTT();renderTT()}
+function renderTT(){
+const ord=TT.map((c,i)=>i).sort((a,b)=>DAYS.indexOf(TT[a].day)-DAYS.indexOf(TT[b].day)||tm(TT[a].start)-tm(TT[b].start));
+document.getElementById("tlist").innerHTML=ord.map(i=>{const c=TT[i];return `<div class="ti"><span>${c.day} ${c.start}~${c.end} · ${c.name===c.room?c.room:c.name+" ("+c.room+")"}</span><button onclick="delTT(${i})">삭제</button></div>`}).join("");
+analyzeTT()}
+function analyzeTT(){
 const msg=document.getElementById("tmsg"),out=document.getElementById("tres");out.innerHTML="";
-let smp=null;try{smp=typeof claude!=="undefined"?await claude.use("sample"):null}catch(e){}
-if(!smp){msg.textContent="이 기능은 claude.ai에서 페이지를 열었을 때만 사용할 수 있어요.";return}
-msg.textContent="시간표를 읽는 중... (10~30초)";
-let rows;
-try{rows=await smp.json(PROMPT,{images:[file],modelTier:"default"})}catch(e){msg.textContent="시간표를 읽지 못했어요. "+(e&&e.code==="not_granted"?"Claude 사용을 허용해 주세요.":"캡처 이미지를 확인하고 다시 시도해 주세요.");return}
-const cls=(Array.isArray(rows)?rows:[]).map(r=>{const m=/^([A-Za-z]{1,2})\s*-?(\d{2,4})/.exec(r.room||"");return{day:r.day,name:r.name,s:tm(r.start),e:tm(r.end),start:r.start,end:r.end,room:r.room,L:m?m[1].toUpperCase():null,fl:m?Math.floor(+m[2]/100):null}}).filter(c=>DAYS.includes(c.day)&&c.s!=null&&c.e!=null);
-if(!cls.length){msg.textContent="시간표에서 수업을 찾지 못했어요. 캡처가 선명한지 확인해 주세요.";return}
+if(TT.length<2){msg.textContent=TT.length?"수업을 하나 더 추가하면 이동 구간 추천이 나와요.":"";return}
+const cls=TT.map(r=>{const m=/^([A-Z]{1,2})(\d{2,4})$/.exec(r.room);return{day:r.day,name:r.name,s:tm(r.start),e:tm(r.end),start:r.start,end:r.end,room:r.room,L:m?m[1]:null,fl:m?Math.floor(+m[2]/100):null}});
 let h="",n=0;const unk=new Set();
 DAYS.forEach(d=>{const L=cls.filter(c=>c.day===d).sort((a,b)=>a.s-b.s);let dh="";
 for(let j=0;j<L.length-1;j++){const a=L[j],b=L[j+1];if(!a.L||!b.L||b.s<a.e)continue;
@@ -210,12 +229,25 @@ const A={x:X[1],y:X[2]},B={x:Y[1],y:Y[2]},gap=b.s-a.e,direct=Math.ceil(dist(A,B)
 dh+=`<div class="bc"><b>${a.name} → ${b.name}</b><div class="m">${X[0]}${a.fl?" "+a.fl+"층":""} (${a.end} 종료) → ${Y[0]}${b.fl?" "+b.fl+"층":""} (${b.start} 시작)<br>쉬는 시간 ${gap}분 · 바로 이동 시 약 ${direct}분</div>`+
 rec.map((r,q)=>{const p=r.p,via=Math.ceil(r.walk);return `<div style="margin-top:8px">${q?I("alt")+"대안":I("chk")+"추천"} <b>${p[4]}${p[5]?" · "+p[5]:""}</b> <span class="m">${NAME[r.k]}</span><div class="m">돌아가는 거리 약 ${Math.round(r.extra)}m · 반납 경유 도보 약 ${via}분${via>gap?" · "+I("warn")+"시간이 빠듯해요":""}${r.full?" · 최근 '가득 참' 제보 있음":""}</div><button style="margin-top:4px" onclick="tab(1);pick(${r.i},true)">${I("pin")}지도에서 보기</button></div>`}).join("")+"</div>"}
 if(dh)h+=`<h3 style="font-size:15px;margin:14px 0 0">${d}요일</h3>`+dh});
-msg.textContent=`수업 ${cls.length}개를 읽었고, 이동 구간 ${n}곳을 분석했어요.`+(unk.size?` 위치를 모르는 건물(${[...unk].map(l=>BX[l]?BX[l][0]:l).join(", ")})이 포함된 구간은 제외했어요.`:"");
-out.innerHTML=h+`<div class="tip">읽은 수업: ${cls.map(c=>`${c.day} ${c.start} ${c.name}(${c.room||"온라인"})`).join(" / ")}</div>`}
-document.getElementById("tup").onclick=()=>document.getElementById("tf").click();
-document.getElementById("tf").onchange=e=>{const f=e.target.files[0];if(f)runTT(f);e.target.value=""};
+msg.textContent=n?`이동 구간 ${n}곳을 분석했어요.`:"연속된 수업이 없어서 추천할 구간이 없어요.";
+if(unk.size)msg.textContent+=` 위치를 모르는 건물(${[...unk].map(l=>BX[l]?BX[l][0]:l+"동").join(", ")})이 포함된 구간은 제외했어요.`;
+out.innerHTML=h}
+renderTT();
 renderB();
 draw();
 document.querySelectorAll("[data-ic]").forEach(e=>{e.innerHTML=I(e.dataset.ic)});
 (function(){const w=document.getElementById("wrap"),f=1100/1823;w.scrollLeft=Math.max(0,450*f-w.clientWidth/2);w.scrollTop=Math.max(0,(930-250)*f-w.clientHeight/2)})();
+// ---- 줌 (핀치 / 버튼 / ctrl+휠) ----
+let ZW=1100;
+function setZoom(nw,cx,cy){const w=document.getElementById("wrap");nw=Math.min(2800,Math.max(520,nw));const r=nw/ZW,x=(w.scrollLeft+cx)*r-cx,y=(w.scrollTop+cy)*r-cy;ZW=nw;document.getElementById("map").style.width=nw+"px";w.scrollLeft=x;w.scrollTop=y}
+(function(){const w=document.getElementById("wrap");
+const ctr=()=>({x:w.clientWidth/2,y:w.clientHeight/2});
+document.getElementById("zi").onclick=()=>{const c=ctr();setZoom(ZW*1.35,c.x,c.y)};
+document.getElementById("zo").onclick=()=>{const c=ctr();setZoom(ZW/1.35,c.x,c.y)};
+let ld=0;const dst=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+w.addEventListener("touchstart",e=>{if(e.touches.length===2)ld=dst(e.touches)},{passive:true});
+w.addEventListener("touchmove",e=>{if(e.touches.length===2){e.preventDefault();const d=dst(e.touches),r=w.getBoundingClientRect(),cx=(e.touches[0].clientX+e.touches[1].clientX)/2-r.left,cy=(e.touches[0].clientY+e.touches[1].clientY)/2-r.top;if(ld)setZoom(ZW*d/ld,cx,cy);ld=d}},{passive:false});
+w.addEventListener("touchend",()=>{ld=0});
+w.addEventListener("wheel",e=>{if(e.ctrlKey){e.preventDefault();const r=w.getBoundingClientRect();setZoom(ZW*(e.deltaY<0?1.1:1/1.1),e.clientX-r.left,e.clientY-r.top)}},{passive:false});
+})();
 </script></body></html>
