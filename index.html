@@ -355,18 +355,17 @@ if(location.hash==="#calibrate")openCal();
 window.addEventListener("hashchange",()=>{if(location.hash==="#calibrate")openCal()});
 // ---- 캐릭터 키우기 (도트) ----
 const PAL={o:"#2b3a7a",w:"#ffffff",s:"#cfdcf5",l:"#6f94ff",h:"#b9ceff",e:"#1e2433",c:"#ff9fb0",m:"#7a2e3b",y:"#ffd24a",b:"#9dbaff",f:"#6f94ff"};
-const TH=[1,5,15],SN=["알","아기 컵","어린 컵","어른 컵"],MSG=["오늘도 반납 고마워요!","컵은 꼭 비우고 반납해요!","제보 덕분에 모두 편해져요."];
-const FM={ok:"제보 완료! 캐릭터가 밥을 먹었어요.",grow:"제보 완료! 캐릭터가 성장했어요!",dup:"제보 완료! 같은 반납함은 30분 뒤에 다시 먹일 수 있어요.",cap:"제보 완료! 오늘은 더 먹일 수 없어요. (하루 5번)"};
+const TH=[0,2,5],SN=["아기 컵","아기 컵","어린 컵","어른 컵"],MSG=["오늘도 반납 고마워요!","컵은 꼭 비우고 반납해요!","제보 덕분에 모두 편해져요."];
+const FM={ok:"제보 완료! 캐릭터가 밥을 먹었어요.",grow:"제보 완료! 캐릭터가 성장했어요!",dup:"제보 완료! 같은 반납함은 10분 뒤에 다시 먹일 수 있어요.",cap:"제보 완료! 오늘은 더 먹일 수 없어요. (하루 10번)"};
 let CHR={name:"컵이",count:0,last:0,bin:{},day:"",today:0};
 try{CHR=Object.assign(CHR,JSON.parse(localStorage.getItem("cupchar")||"{}"))}catch(e){}
 const chSave=()=>{try{localStorage.setItem("cupchar",JSON.stringify(CHR))}catch(e){}};
-const stageOf=n=>n>=TH[2]?3:n>=TH[1]?2:n>=TH[0]?1:0;
+const stageOf=n=>n>=TH[2]?3:n>=TH[1]?2:1;
 const dayKey=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
 const escH=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function chGrid(st,mood){
-if(st===0)return["oooooo","owwwwwwo","owwwwwwwwo","owwwyywwwwwo","owwwwwwwwwwwwo","owwwwwwwwwwwwo","owwwwwwwwwyywo","owwwwwwwwwwwwo","oswwwwwwwwwwso","osswwwwwwsso","osssssssso","oooooooo"];
-const mo={ok:["wwwmmwww","wwwwwwww"],happy:["wmwwwwmw","wwmmmmww"],sad:["wwmmmmww","wmwwwwmw"]}[mood];
-const body=["owwwwwwwwo","owewwwwewo","owcwwwwcwo","o"+mo[0]+"o","o"+mo[1]+"o","osswwwwsso","osssssso","oooooo"];
+const mo=["wwmmww","wwwwwwww"];
+const body=["owwwwwwwwo","owewwwwewo","oc"+mo[0]+"co","o"+mo[1]+"o","owwwwwwwwo","osswwwwsso","osssssso","oooooo"];
 if(st>=2){body[2]="b"+body[2]+"b";body[3]="b"+body[3]+"b"}
 const top=st===2?["oyyo"]:st===3?["y.yy.y","yyyyyy"]:[];
 return top.concat(["oooooooooooo","ollhhllllllo","oooooooooooo"],body,st>=2?["ff..ff","oo..oo"]:[])}
@@ -377,16 +376,15 @@ return `<svg viewBox="0 0 16 16" shape-rendering="crispEdges" width="208" height
 function feed(id){
 const now=Date.now(),day=dayKey();if(CHR.day!==day){CHR.day=day;CHR.today=0}
 const prev=stageOf(CHR.count);let r="ok";
-if(now-(CHR.bin[id]||0)<30*60000)r="dup";
-else if(CHR.today>=5)r="cap";
+if(now-(CHR.bin[id]||0)<10*60000)r="dup";
+else if(CHR.today>=10)r="cap";
 else{CHR.count++;CHR.today++;CHR.last=now;CHR.bin[id]=now;if(stageOf(CHR.count)>prev)r="grow"}
 chSave();chRender();return r}
 function chRender(){
 const n=CHR.count,st=stageOf(n),now=Date.now(),hungry=n>0&&now-CHR.last>72*3600e3,fed=n>0&&now-CHR.last<3600e3;
-const mood=hungry?"sad":(fed||st===3?"happy":"ok"),today=CHR.day===dayKey()?CHR.today:0;
-const msg=st===0?"첫 제보를 하면 알이 깨어나요!":hungry?"배고파요… 제보 한 번 해줄래요?":fed?"냠냠! 맛있어요!":MSG[new Date().getDate()%MSG.length];
+const mood="ok",today=CHR.day===dayKey()?CHR.today:0;
 const nx=st<3?TH[st]:null,pv=st===0?0:TH[st-1],pct=nx?Math.round((n-pv)/(nx-pv)*100):100;
-byId("t4").innerHTML=`<div class="bc" style="text-align:center"><div class="cbub">${msg}</div>${chSvg(st,mood)}<input id="chn" class="cname" maxlength="8" value="${escH(CHR.name)}" aria-label="이름"><div class="m">${SN[st]} · 총 제보 ${n}번</div><div class="cbar"><i style="width:${pct}%"></i></div><div class="m">${nx?"다음 성장까지 "+(nx-n)+"번":"다 자랐어요!"}</div></div><div class="bc m">오늘 먹이 ${Math.min(today,5)}/5 · 같은 반납함은 30분에 한 번만 인정돼요.</div>`;
+byId("t4").innerHTML=`<div class="bc" style="text-align:center">${chSvg(st,mood)}<input id="chn" class="cname" maxlength="8" value="${escH(CHR.name)}" aria-label="이름"><div class="m">${SN[st]} · 총 제보 ${n}번</div><div class="cbar"><i style="width:${pct}%"></i></div><div class="m">${nx?"다음 성장까지 "+(nx-n)+"번":"다 자랐어요!"}</div></div><div class="bc m">오늘 먹이 ${Math.min(today,10)}/10 · 같은 반납함은 10분에 한 번만 인정돼요.</div>`;
 byId("chn").onchange=e=>{CHR.name=e.target.value.trim().slice(0,8)||"컵이";chSave()}}
 {const _t=tab;tab=n=>{_t(n);if(n===4)chRender()}}
 chRender();
