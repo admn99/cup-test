@@ -58,9 +58,33 @@ h1{font-family:Jua,"Apple SD Gothic Neo",sans-serif;font-weight:400}
 .pin{cursor:pointer;filter:drop-shadow(0 2px 3px rgba(20,30,60,.35))}
 .zb{position:absolute;right:10px;top:10px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .zb button{width:38px;height:38px;border-radius:12px;padding:0;font-size:22px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+#sheet{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+#sbk{position:absolute;inset:0;background:rgba(15,20,40,.45)}
+#spn{position:relative;width:100%;max-width:760px;background:var(--card);border-radius:22px 22px 0 0;padding:18px 16px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 24px rgba(0,0,0,.2)}
+.so{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2px solid var(--bd);border-radius:14px;padding:12px 14px;margin-bottom:8px;font-size:15px;font-weight:700;background:var(--card);color:var(--tx)}
+.so .ic{width:1.6em;height:1.6em;margin:0}
+.so.on2{border-color:var(--pri);background:rgba(58,79,155,.08)}
+.sbt{display:flex;gap:8px;margin-top:6px}.sbt button{flex:1;padding:12px;border-radius:12px;font-size:15px}
+.sbt button:disabled{opacity:.4}
+#toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#1e2433;color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;z-index:60}
+body{padding-bottom:104px}
+#nav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:6px;max-width:760px;margin:0 auto;background:var(--card);border-radius:22px 22px 0 0;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 18px rgba(58,79,155,.14)}
+#nav button{flex:1;border:0;background:transparent;border-radius:14px;padding:11px 0;color:var(--sub);font-size:26px;line-height:1;display:flex;justify-content:center}
+#nav button.on{color:var(--pri);background:rgba(58,79,155,.1)}
+#nav .ic{display:block;width:1em;height:1em;margin:0;vertical-align:0}
+#calp{position:fixed;inset:0;z-index:70;background:var(--bg);overflow:auto}
+#calc{max-width:760px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top,0px)) 16px 40px}
+#calc select,#calc textarea{width:100%;font:inherit;font-size:14px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx)}
+.b{stroke-linejoin:round}.gr{fill:#dfeedd}.gr2{fill:#d3ece9}
+@media (prefers-color-scheme:dark){.gr{fill:#2b3a31}.gr2{fill:#27403f}}
+.cbub{display:inline-block;background:var(--bg);border:2px solid var(--pri);border-radius:12px;padding:8px 14px;font-size:14px;font-weight:700;margin-bottom:6px}
+.cpx{display:block;margin:10px auto 4px;animation:bob 1.2s steps(1) infinite}
+@keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.cname{display:block;margin:6px auto;width:9em;text-align:center;font:inherit;font-size:20px;font-weight:700;border:0;border-bottom:2px dashed var(--bd);background:transparent;color:var(--tx);padding:4px}
+.cbar{height:16px;border:2px solid var(--pri);border-radius:4px;margin:8px auto;max-width:260px;padding:1px}
+.cbar i{display:block;height:100%;background:var(--pri)}
 </style></head><body>
 <h1>가대 캠퍼스 컵 반납함</h1>
-<div id="tabs"><button class="on" onclick="tab(1)"><span data-ic="map"></span>지도</button><button onclick="tab(2)"><span data-ic="bld"></span>건물</button><button onclick="tab(3)"><span data-ic="cal"></span>시간표</button></div>
 <div id="t1">
 <button id="loc"><span data-ic="pin"></span>내 위치에서 가장 가까운 반납함 찾기</button>
 <div class="row" id="flt"></div>
@@ -74,9 +98,24 @@ h1{font-family:Jua,"Apple SD Gothic Neo",sans-serif;font-weight:400}
 <div class="fr"><input id="fr" placeholder="강의실 (예: N319)" autocapitalize="characters"><input id="fn" placeholder="과목명 (선택)"></div>
 <button id="tadd" class="on" onclick="addTT()" style="width:100%;border-radius:10px;padding:10px">수업 추가</button><div id="fmsg" class="m" style="color:#e53935;margin-top:6px"></div>
 <div id="tlist"></div><div id="tmsg" class="m" style="margin-top:6px"></div></div><div id="tres"></div></div>
+<div id="t4" hidden></div>
+<nav id="nav"><button class="on" onclick="tab(1)" aria-label="지도"><span data-ic="map"></span></button><button onclick="tab(2)" aria-label="건물"><span data-ic="bld"></span></button><button onclick="tab(3)" aria-label="시간표"><span data-ic="cal"></span></button><button onclick="tab(4)" aria-label="캐릭터"><span data-ic="char"></span></button></nav>
+<div id="calp" hidden><div id="calc">
+<div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:17px">위치 보정 모드</b><button id="calx">닫기</button></div>
+<div class="m" style="margin:6px 0 10px;line-height:1.55">① 보정할 장소에 서서 아래에서 지금 있는 곳을 고르세요. ② "여기서 측정하기"를 누르고 6초 기다리세요. ③ 서로 멀리 떨어진 3곳 이상을 측정하면 정확해져요. 건물 밖 하늘이 트인 곳이 좋아요.</div>
+<select id="cals"></select>
+<button id="calm" class="on" style="width:100%;margin-top:8px;border-radius:12px;padding:12px">여기서 측정하기</button>
+<div id="calst" class="m" style="margin-top:8px"></div>
+<div id="calpts"></div><div id="calres"></div>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button id="cala" class="on">이 기기에 적용해 보기</button><button id="calc2">값 복사</button><button id="calr">초기화</button></div>
+<textarea id="calout" rows="5" readonly hidden style="margin-top:8px"></textarea>
+</div></div>
+<div id="sheet" hidden><div id="sbk"></div><div id="spn"><div style="font-weight:700;font-size:17px">상태 제보하기</div><div class="m" id="ssub" style="margin:3px 0 12px"></div><div id="sopts"></div><div class="sbt"><button id="scx">취소</button><button id="sok" class="on" disabled>제보하기</button></div></div></div>
+<div id="toast" hidden></div>
 <script>
 // ---- 픽토그램 (직접 그린 아이콘) ----
 const IP={
+char:'<path d="M7 8h10l-1.3 12H8.3z"/><path d="M6 8h12M8.5 4.5h7V8h-7z"/><path d="M10.2 13.2v.1M13.8 13.2v.1" stroke-width="2.8"/><path d="M10.5 16.2c.9.7 2.100.7 3 0"/>',
 map:'<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>',
 bld:'<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>',
 cal:'<rect x="3" y="5" width="18" height="16" rx="3.5"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -98,7 +137,7 @@ return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const BLD=[["김수환관",60,940,290,150],["안드레아관",360,900,330,170],["니콜스관",400,820,300,90],["다솔관",440,560,230,140],["학생미래인재관",700,640,420,140],["미카엘관",780,470,230,80],["중앙도서관",1040,450,250,100],["약학관",1150,310,150,120],["성심관",1440,300,110,100],["콘서트홀",1470,500,230,130]];
 // [id,종류,x,y,건물,위치설명]  종류: G일반 Q QR D음료수거함 W세척기
 const P=[
-["G1","G",298,1095,"김수환관","1층"],["G2","G",313,1023,"김수환관","식당 앞"],["G3","G",385,1073,"김수환관","1층"],
+["G1","G",298,1095,"김수환관","매머드 앞"],["G2","G",313,1023,"김수환관","식당 앞"],["G3","G",385,1073,"김수환관","1층"],
 ["G4","G",228,928,"김수환관","기숙사 로비"],["G5","G",438,929,"안드레아관",""],["G6","G",654,872,"니콜스관","4층"],
 ["G7","G",699,843,"니콜스관","1층"],["G8","G",618,683,"다솔관","2층"],["G9","G",822,711,"학생미래인재관","1층"],
 ["G10","G",876,728,"학생미래인재관","2층"],["G11","G",1495,346,"성심관","2층 화장실 앞 (로비가 2층)"],
@@ -119,6 +158,22 @@ function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.set
 function star(x,y,r){let s="";for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,q=i%2?r*.45:r;s+=(x+q*Math.cos(a)).toFixed(1)+","+(y+q*Math.sin(a)).toFixed(1)+" "}return s}
 const SC={ok:"#2e9e4f",mid:"#f2a100",full:"#e53935"};
 const OUT={};
+// ---- 캠퍼스 배경 지도 (포스터 배치 기준 도형) ----
+const pg=p=>"M"+p.map(q=>q.join(" ")).join("L")+"Z",rc=(x,y,w,h)=>pg([[x,y],[x+w,y],[x+w,y+h],[x,y+h]]);
+const GREEN=[["gr2",pg([[1190,800],[1445,660],[1478,758],[1255,905]]),"대운동장",1335,790],["gr2",pg([[1555,395],[1640,378],[1812,478],[1738,526]]),"테니스장",1700,455],["gr","M750 885a150 62 0 1 0 300 0a150 62 0 1 0 -300 0z","하늘동산",900,892]];
+const BLDG=[
+["김수환관",pg([[60,1072],[92,950],[292,925],[335,982],[405,998],[412,1092],[340,1122],[150,1112]]),205,975],
+["안드레아관",pg([[355,925],[470,915],[640,935],[640,1000],[702,1015],[712,1068],[620,1072],[610,1002],[360,1002]]),525,975],
+["니콜스관",pg([[400,830],[690,815],[705,880],[625,902],[420,897]]),490,862],
+["마리아관",rc(640,880,82,55),681,914,19],
+["비르투스관",rc(390,742,130,62),455,780,21],["밤비노관",rc(545,742,115,62),602,780,21],
+["다솔관",rc(440,556,212,146),520,635],["바오로관",rc(312,636,95,62),360,672,19],["국제교류관",rc(330,544,100,64),380,582,17],
+["예수성심성당","M58 868a72 34 0 1 0 144 0a72 34 0 1 0 -144 0z",130,872,17],
+["학생미래인재관",pg([[695,632],[860,632],[860,690],[1005,690],[1005,748],[695,748]]),775,665,21],
+["미카엘관",rc(778,482,228,82),900,553],["중앙도서관",rc(1040,452,225,108),1152,550,22],
+["약학관",rc(1160,306,112,125),1216,336,22],["성심관",rc(1452,305,72,96),1488,392,22],
+["콘서트홀",pg([[1482,525],[1552,492],[1735,562],[1642,612],[1512,612]]),1610,545,22]];
+const BASE=GREEN.map(g=>`<path class="${g[0]}" d="${g[1]}"/><text class="bt" x="${g[3]}" y="${g[4]}" style="font-size:20px;opacity:.8">${g[2]}</text>`).join("")+BLDG.map(b=>`<path class="b" d="${b[1]}"/><text class="bt" x="${b[2]}" y="${b[3]}" style="font-size:${b[4]||24}px">${b[0]}</text>`).join("");
 const NAVY="#3a4f9b",STC={ok:"#2e9e4f",mid:"#f2a100",full:"#e53935",none:"#8b93a7"};
 const IC={
 G:'<path d="M7 8h10l-1.3 12H8.3z"/><path d="M6 8h12M8.5 4.5h7V8h-7z"/>',
@@ -134,7 +189,7 @@ function selMark(i){const p=P[i],q=PT[i],tx=p[4]+(p[5]?" · "+p[5]:""),w=tx.leng
 return `<g class="pin" data-i="${i}" transform="translate(${q.x} ${q.y})" style="filter:drop-shadow(0 6px 8px rgba(20,30,60,.5))"><rect x="${-w/2}" y="-104" width="${w}" height="48" rx="24" fill="#fff"/><polygon points="-11,-56 11,-56 0,-42" fill="#fff"/><text x="0" y="-72" text-anchor="middle" font-size="24" font-weight="700" fill="#1e2433">${tx}</text><g transform="scale(1.45)">${pinSvg(p)}</g></g>`}
 function draw(){
 let h="";
-BLD.forEach(b=>{h+=`<rect class="b" x="${b[1]}" y="${b[2]}" width="${b[3]}" height="${b[4]}" rx="10"/><text class="bt" x="${b[1]+b[3]/2}" y="${b[2]+b[4]/2+9}">${b[0]}</text>`});
+h+=BASE;
 const vis=i=>filt==="ALL"||P[i][1]===filt,dim=sel!==null&&vis(sel);
 P.forEach((p,i)=>{if(!vis(i)||i===sel)return;h+=`<g class="pin" data-i="${i}" opacity="${dim?.45:1}" transform="translate(${PT[i].x} ${PT[i].y})">${pinSvg(p)}<circle r="34" fill="transparent"/></g>`});
 if(sel!==null&&vis(sel))h+=selMark(sel);
@@ -143,7 +198,7 @@ svg.innerHTML=h;
 svg.querySelectorAll(".pin").forEach(g=>g.onclick=()=>{const i=+g.dataset.i;if(sel===i)deselect();else pick(i,true)})}
 function deselect(){sel=null;draw();document.getElementById("card").innerHTML='<span class="m">지도의 핀을 눌러 보세요.</span>'}
 function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
-function metersPerUnit(){const mx=(GEO.lngR-GEO.lngL)*111320*Math.cos(37.487*Math.PI/180);return mx/(GEO.x1-GEO.x0)}
+function metersPerUnit(){const c=cc();return 1/Math.hypot(c.ar,c.ai)}
 function pick(i,center){
 sel=i;draw();const p=P[i],[id,k,x,y,b,n]=p,w=document.getElementById("wrap");
 if(center){const f=ZW/1823;w.scrollTo({left:PT[i].x*f-w.clientWidth/2,top:(PT[i].y-250)*f-w.clientHeight/2,behavior:"smooth"})}
@@ -151,7 +206,7 @@ let h=`<h2>${k==="G"||k==="Q"?b+(n?" · "+n:""):id}</h2><div class="m">${k==="G"
 if(me){const m=Math.round(dist(me,{x,y})*metersPerUnit());h+=`<div class="m">내 위치에서 직선 약 ${m}m (도보 약 ${Math.max(1,Math.round(m/70))}분)</div>`}
 if(OUT[id]){h+=`<div style="margin-top:6px;font-weight:700;color:#e53935">${OUT[id]}</div>`}else if(k==="G"||k==="Q"){
 const s=ST[id];h+=`<div class="m" style="margin-top:6px">${s?"최근 제보: "+({ok:"여유",mid:"보통",full:"가득 참"})[s.v]+" ("+s.t+")":"아직 제보가 없어요"}</div>
-<div class="st"><button onclick="rep('${id}','ok')">${I("ok")}여유</button> <button onclick="rep('${id}','mid')">${I("mid")}보통</button> <button onclick="rep('${id}','full')">${I("full")}가득 참</button></div>`;
+<div class="st"><button class="on" onclick="openRep('${id}')">제보하기</button></div>`;
 if(k==="G")h+=`<div class="m" style="margin-top:6px">뚜껑·컵홀더를 분리하고 남은 음료는 비운 뒤 반납해 주세요.</div>`}
 document.getElementById("card").innerHTML=h}
 function rep(id,v){const d=new Date();ST[id]={v,t:(d.getMonth()+1)+"/"+d.getDate()+" "+d.getHours()+":"+String(d.getMinutes()).padStart(2,"0")};
@@ -168,7 +223,7 @@ if(!navigator.geolocation){c.textContent="이 기기에서는 위치 기능을 �
 c.textContent="위치 확인 중...";
 navigator.geolocation.getCurrentPosition(pos=>{
 const{latitude:la,longitude:lo}=pos.coords;
-me={x:GEO.x0+(lo-GEO.lngL)/(GEO.lngR-GEO.lngL)*(GEO.x1-GEO.x0),y:GEO.y0+(GEO.latTop-la)/(GEO.latTop-GEO.latBot)*(GEO.y1-GEO.y0)};
+me=gpsToMap(la,lo);
 let bi=-1,bd=1e9;P.forEach((p,i)=>{if(p[1]!=="G"&&p[1]!=="Q"||OUT[p[0]])return;if(filt==="G"&&p[1]!=="G"||filt==="Q"&&p[1]!=="Q")return;
 const d=dist(me,{x:p[2],y:p[3]});if(d<bd){bd=d;bi=i}});
 if(bd*metersPerUnit()>1500){draw();c.textContent="캠퍼스 밖에 계신 것 같아요. 핀을 눌러 위치를 확인해 보세요.";return}
@@ -177,7 +232,7 @@ pick(bi,true)},()=>{c.textContent="위치 권한이 거부되었어요. 지도�
 const BC={"김수환관":"#d99a4e","안드레아관":"#e08c78","니콜스관":"#c4547a","다솔관":"#8a5a9a","학생미래인재관":"#e2a0b4","미카엘관":"#7e57a8","중앙도서관":"#4f8f86","약학관":"#5c7bc4","성심관":"#c47a4a","콘서트홀":"#6a8a5a"};
 const LT={"김수환관":"K","니콜스관":"N","다솔관":"D","약학관":"NP","성심관":"SH","콘서트홀":"CH","안드레아관":"A","학생미래인재관":"B","미카엘관":"T","중앙도서관":"L"};
 let bsel="김수환관";
-function tab(n){["t1","t2","t3"].forEach((t,i)=>{document.getElementById(t).hidden=i+1!==n});[...document.querySelectorAll("#tabs button")].forEach((b,i)=>b.className=i+1===n?"on":"")}
+function tab(n){["t1","t2","t3","t4"].forEach((t,i)=>{document.getElementById(t).hidden=i+1!==n});[...document.querySelectorAll("#nav button")].forEach((b,i)=>b.className=i+1===n?"on":"")}
 function stTxt(id){const s=ST[id];return s?"최근 제보: "+({ok:"여유",mid:"보통",full:"가득 참"})[s.v]+" ("+s.t+")":"아직 제보가 없어요"}
 function renderB(){
 const isBin=p=>p[1]==="G"||p[1]==="Q";
@@ -190,7 +245,7 @@ let h=`<div style="margin:4px 0"><b>${bsel}</b> · 반납함 ${av.length}곳</di
 h+=`<div class="tip" style="font-weight:700;color:${hasD?"#2e9e4f":"#e53935"}">이 건물에는 음료수거함이 ${hasD?"있어요":"없어요"}.</div>`;
 bins.forEach(i=>{const [id,k,x,y,b,n]=P[i];
 h+=`<div class="bc"><b>${NAME[k]}</b><div class="m">${n||"위치 상세 준비 중"}</div><div class="m" style="margin-top:4px">${OUT[id]?`<span style="color:#e53935;font-weight:700">${OUT[id]}</span>`:stTxt(id)}</div>
-<div class="st">${OUT[id]?"":`<button onclick="rep('${id}','ok')">${I("ok")}여유</button> <button onclick="rep('${id}','mid')">${I("mid")}보통</button> <button onclick="rep('${id}','full')">${I("full")}가득 참</button> `}<button onclick="tab(1);pick(${i},true)">${I("pin")}지도에서 보기</button></div></div>`});
+<div class="st">${OUT[id]?"":`<button class="on" onclick="openRep('${id}')">제보하기</button> `}<button onclick="tab(1);pick(${i},true)">${I("pin")}지도에서 보기</button></div></div>`});
 if(!bins.length)h+=`<div class="bc m">이 건물에는 등록된 반납함이 없어요.</div>`;
 oth.forEach(i=>{const [id,k,x,y,b,n]=P[i];h+=`<div class="bc"><b style="color:${COL[k]}">${id}</b><div class="m">${n}</div></div>`});
 document.getElementById("bdet").innerHTML=h}
@@ -237,6 +292,104 @@ renderB();
 draw();
 document.querySelectorAll("[data-ic]").forEach(e=>{e.innerHTML=I(e.dataset.ic)});
 (function(){const w=document.getElementById("wrap"),f=1100/1823;w.scrollLeft=Math.max(0,450*f-w.clientWidth/2);w.scrollTop=Math.max(0,(930-250)*f-w.clientHeight/2)})();
+// ---- 제보 팝업 ----
+let rid=null,rv=null;
+function openRep(id){rid=id;rv=null;const p=P.find(q=>q[0]===id);
+document.getElementById("ssub").textContent=p[4]+(p[5]?" · "+p[5]:"")+" · "+NAME[p[1]];
+const O=[["ok","여유","컵을 넣을 자리가 충분해요"],["mid","보통","반쯤 찼지만 아직 넣을 수 있어요"],["full","가득 참","넘치거나 더 넣기 어려워요"]];
+document.getElementById("sopts").innerHTML=O.map(o=>`<button class="so" data-v="${o[0]}">${I(o[0])}<span>${o[1]}<br><span class="m" style="font-weight:400">${o[2]}</span></span></button>`).join("");
+document.querySelectorAll("#sopts .so").forEach(b=>b.onclick=()=>{rv=b.dataset.v;document.querySelectorAll("#sopts .so").forEach(x=>x.className="so"+(x===b?" on2":""));document.getElementById("sok").disabled=false});
+document.getElementById("sok").disabled=true;document.getElementById("sheet").hidden=false}
+function closeRep(){document.getElementById("sheet").hidden=true}
+function toast(t){const e=document.getElementById("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>{e.hidden=true},2200)}
+document.getElementById("scx").onclick=closeRep;document.getElementById("sbk").onclick=closeRep;
+document.getElementById("sok").onclick=()=>{if(rid&&rv){rep(rid,rv);const fr=feed(rid);closeRep();toast(FM[fr])}};
+// ---- GPS 보정 모드 (숨김: 제목 5번 연속 탭 또는 주소 끝에 #calibrate) ----
+const byId=id=>document.getElementById(id);
+const DEFCAL={lat0:37.487055,lng0:126.800042,ar:1/0.45,ai:0,br:1140,bi:-478};
+let CAL=null,CP=[];
+try{CAL=JSON.parse(localStorage.getItem("cupcal")||"null")}catch(e){}
+try{CP=JSON.parse(localStorage.getItem("cupcalpts")||"[]")}catch(e){}
+const cc=()=>CAL||DEFCAL;
+const ll2w=(la,lo,c)=>[(lo-c.lng0)*111320*Math.cos(c.lat0*Math.PI/180),(la-c.lat0)*110950];
+function gpsToMap(la,lo){const c=cc(),w=ll2w(la,lo,c);return{x:c.ar*w[0]-c.ai*w[1]+c.br,y:-(c.ai*w[0]+c.ar*w[1]+c.bi)}}
+const LM=["G1","Q4","Q5","Q6","Q7","Q8","G11","G13","G14"],lmP=id=>P.find(p=>p[0]===id),lmN=id=>{const p=lmP(id);return p[4]+(p[5]?" · "+p[5]:"")};
+byId("cals").innerHTML=LM.map(id=>`<option value="${id}">${lmN(id)}</option>`).join("");
+const saveCP=()=>{try{localStorage.setItem("cupcalpts",JSON.stringify(CP))}catch(e){}};
+function calFit(){
+if(CP.length<2)return null;
+const lat0=CP.reduce((s,p)=>s+p.lat,0)/CP.length,lng0=CP.reduce((s,p)=>s+p.lng,0)/CP.length;
+const W=CP.map(p=>ll2w(p.lat,p.lng,{lat0,lng0})),Z=CP.map(p=>{const q=lmP(p.id);return[q[2],-q[3]]});
+const n=CP.length,wm=[W.reduce((s,w)=>s+w[0],0)/n,W.reduce((s,w)=>s+w[1],0)/n],zm=[Z.reduce((s,z)=>s+z[0],0)/n,Z.reduce((s,z)=>s+z[1],0)/n];
+let nr=0,ni=0,d=0;
+W.forEach((w,i)=>{const wr=w[0]-wm[0],wi=w[1]-wm[1],zr=Z[i][0]-zm[0],zi=Z[i][1]-zm[1];nr+=wr*zr+wi*zi;ni+=wr*zi-wi*zr;d+=wr*wr+wi*wi});
+if(d<2500)return null;
+const ar=nr/d,ai=ni/d,br=zm[0]-(ar*wm[0]-ai*wm[1]),bi=zm[1]-(ai*wm[0]+ar*wm[1]),k=Math.hypot(ar,ai);
+const res=W.map((w,i)=>Math.hypot(ar*w[0]-ai*w[1]+br-Z[i][0],ai*w[0]+ar*w[1]+bi-Z[i][1])/k);
+return{c:{lat0,lng0,ar,ai,br,bi},res,scale:1/k,rot:Math.atan2(ai,ar)*180/Math.PI}}
+function calRender(){
+byId("calpts").innerHTML=CP.length?`<div class="bc" style="margin-top:10px"><b>측정한 지점 (${CP.length})</b>`+CP.map((p,i)=>`<div class="trow"><span>${lmN(p.id)} · ±${p.acc}m</span><button onclick="calDel(${i})">삭제</button></div>`).join("")+"</div>":"";
+const f=calFit();let h="";
+if(CP.length<2)h=`<div class="m" style="margin-top:10px">2곳 이상(가능하면 3곳 이상) 측정하면 계산해 드려요.</div>`;
+else if(!f)h=`<div class="m" style="margin-top:10px;color:#e53935">측정한 지점들이 너무 가까워요. 더 멀리 떨어진 곳을 측정해 주세요.</div>`;
+else{const bad=Math.abs(f.rot)>25||f.scale<.25||f.scale>1.2;h=`<div class="bc"><b>계산 결과</b><div class="m" style="margin-top:4px">지도 1칸 ≈ ${f.scale.toFixed(2)}m · 지도 기울기 ${f.rot.toFixed(1)}°<br>지점별 오차: ${f.res.map(r=>r.toFixed(0)+"m").join(", ")}</div>${bad?`<div style="color:#e53935;margin-top:6px;font-size:13px;font-weight:700">값이 이상해요. 측정한 위치가 맞는지 확인하고 다시 측정해 주세요.</div>`:""}</div>`}
+byId("calres").innerHTML=h}
+function calDel(i){CP.splice(i,1);saveCP();calRender()}
+function openCal(){byId("calp").hidden=false;calRender()}
+byId("calx").onclick=()=>{byId("calp").hidden=true};
+byId("calm").onclick=()=>{
+const st=byId("calst");if(!navigator.geolocation){st.textContent="이 기기에서는 위치 기능을 쓸 수 없어요.";return}
+const id=byId("cals").value;let r=[],fail=0,w=null;
+st.textContent="측정 중... (6초)";byId("calm").disabled=true;
+w=navigator.geolocation.watchPosition(p=>{r.push({lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy});st.textContent=`측정 중... 정확도 ±${Math.round(p.coords.accuracy)}m`},e=>{fail=e.code},{enableHighAccuracy:true,maximumAge:0,timeout:15000});
+setTimeout(()=>{navigator.geolocation.clearWatch(w);byId("calm").disabled=false;
+if(!r.length){st.textContent=fail===1?"위치 권한이 거부됐어요. 브라우저 설정에서 허용해 주세요.":"위치를 받지 못했어요. GPS와 권한을 확인해 주세요.";return}
+const best=Math.min(...r.map(q=>q.acc)),u=r.filter(q=>q.acc<=best*1.5);
+CP=CP.filter(p=>p.id!==id);CP.push({id,lat:u.reduce((s,q)=>s+q.lat,0)/u.length,lng:u.reduce((s,q)=>s+q.lng,0)/u.length,acc:Math.round(best)});saveCP();
+st.textContent=`측정 완료 · 정확도 약 ±${Math.round(best)}m`+(best>40?" (낮아요. 건물 밖에서 다시 측정해 보세요)":"");calRender()},6000)};
+byId("cala").onclick=()=>{const f=calFit();if(!f){byId("calst").textContent="먼저 2곳 이상 측정해 주세요.";return}CAL=f.c;try{localStorage.setItem("cupcal",JSON.stringify(CAL))}catch(e){}draw();byId("calst").textContent="이 기기에 적용했어요. 지도에서 '내 위치' 버튼으로 확인해 보세요."};
+byId("calc2").onclick=()=>{const f=calFit();if(!f){byId("calst").textContent="먼저 2곳 이상 측정해 주세요.";return}const t=JSON.stringify(f.c),o=byId("calout");o.value=t;o.hidden=false;o.select();try{navigator.clipboard.writeText(t)}catch(e){}byId("calst").textContent="값을 복사했어요. 이 값을 Claude에게 보내 주세요."};
+byId("calr").onclick=()=>{CAL=null;CP=[];try{localStorage.removeItem("cupcal")}catch(e){}saveCP();byId("calout").hidden=true;calRender();byId("calst").textContent="초기화했어요."};
+let tc=0,tt=0;document.querySelector("h1").onclick=()=>{const n=Date.now();tc=n-tt<1500?tc+1:1;tt=n;if(tc>=5){tc=0;openCal()}};
+if(location.hash==="#calibrate")openCal();
+window.addEventListener("hashchange",()=>{if(location.hash==="#calibrate")openCal()});
+// ---- 캐릭터 키우기 (도트) ----
+const PAL={o:"#2b3a7a",w:"#ffffff",s:"#cfdcf5",l:"#6f94ff",h:"#b9ceff",e:"#1e2433",c:"#ff9fb0",m:"#7a2e3b",y:"#ffd24a",b:"#9dbaff",f:"#6f94ff"};
+const TH=[1,5,15],SN=["알","아기 컵","어린 컵","어른 컵"],MSG=["오늘도 반납 고마워요!","컵은 꼭 비우고 반납해요!","제보 덕분에 모두 편해져요."];
+const FM={ok:"제보 완료! 캐릭터가 밥을 먹었어요.",grow:"제보 완료! 캐릭터가 성장했어요!",dup:"제보 완료! 같은 반납함은 30분 뒤에 다시 먹일 수 있어요.",cap:"제보 완료! 오늘은 더 먹일 수 없어요. (하루 5번)"};
+let CHR={name:"컵이",count:0,last:0,bin:{},day:"",today:0};
+try{CHR=Object.assign(CHR,JSON.parse(localStorage.getItem("cupchar")||"{}"))}catch(e){}
+const chSave=()=>{try{localStorage.setItem("cupchar",JSON.stringify(CHR))}catch(e){}};
+const stageOf=n=>n>=TH[2]?3:n>=TH[1]?2:n>=TH[0]?1:0;
+const dayKey=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+const escH=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function chGrid(st,mood){
+if(st===0)return["oooooo","owwwwwwo","owwwwwwwwo","owwwyywwwwwo","owwwwwwwwwwwwo","owwwwwwwwwwwwo","owwwwwwwwwyywo","owwwwwwwwwwwwo","oswwwwwwwwwwso","osswwwwwwsso","osssssssso","oooooooo"];
+const mo={ok:["wwwmmwww","wwwwwwww"],happy:["wmwwwwmw","wwmmmmww"],sad:["wwmmmmww","wmwwwwmw"]}[mood];
+const body=["owwwwwwwwo","owewwwwewo","owcwwwwcwo","o"+mo[0]+"o","o"+mo[1]+"o","osswwwwsso","osssssso","oooooo"];
+if(st>=2){body[2]="b"+body[2]+"b";body[3]="b"+body[3]+"b"}
+const top=st===2?["oyyo"]:st===3?["y.yy.y","yyyyyy"]:[];
+return top.concat(["oooooooooooo","ollhhllllllo","oooooooooooo"],body,st>=2?["ff..ff","oo..oo"]:[])}
+function chSvg(st,mood){
+const rows=chGrid(st,mood),t0=16-rows.length;let r="";
+rows.forEach((row,j)=>{const x0=Math.floor((16-row.length)/2);let i=0;while(i<row.length){const c=row[i];if(c==="."){i++;continue}let k=i;while(k<row.length&&row[k]===c)k++;r+=`<rect x="${x0+i}" y="${t0+j}" width="${k-i}" height="1" fill="${PAL[c]}"/>`;i=k}});
+return `<svg viewBox="0 0 16 16" shape-rendering="crispEdges" width="208" height="208" class="cpx">${r}</svg>`}
+function feed(id){
+const now=Date.now(),day=dayKey();if(CHR.day!==day){CHR.day=day;CHR.today=0}
+const prev=stageOf(CHR.count);let r="ok";
+if(now-(CHR.bin[id]||0)<30*60000)r="dup";
+else if(CHR.today>=5)r="cap";
+else{CHR.count++;CHR.today++;CHR.last=now;CHR.bin[id]=now;if(stageOf(CHR.count)>prev)r="grow"}
+chSave();chRender();return r}
+function chRender(){
+const n=CHR.count,st=stageOf(n),now=Date.now(),hungry=n>0&&now-CHR.last>72*3600e3,fed=n>0&&now-CHR.last<3600e3;
+const mood=hungry?"sad":(fed||st===3?"happy":"ok"),today=CHR.day===dayKey()?CHR.today:0;
+const msg=st===0?"첫 제보를 하면 알이 깨어나요!":hungry?"배고파요… 제보 한 번 해줄래요?":fed?"냠냠! 맛있어요!":MSG[new Date().getDate()%MSG.length];
+const nx=st<3?TH[st]:null,pv=st===0?0:TH[st-1],pct=nx?Math.round((n-pv)/(nx-pv)*100):100;
+byId("t4").innerHTML=`<div class="bc" style="text-align:center"><div class="cbub">${msg}</div>${chSvg(st,mood)}<input id="chn" class="cname" maxlength="8" value="${escH(CHR.name)}" aria-label="이름"><div class="m">${SN[st]} · 총 제보 ${n}번</div><div class="cbar"><i style="width:${pct}%"></i></div><div class="m">${nx?"다음 성장까지 "+(nx-n)+"번":"다 자랐어요!"}</div></div><div class="bc m">오늘 먹이 ${Math.min(today,5)}/5 · 같은 반납함은 30분에 한 번만 인정돼요.</div>`;
+byId("chn").onchange=e=>{CHR.name=e.target.value.trim().slice(0,8)||"컵이";chSave()}}
+{const _t=tab;tab=n=>{_t(n);if(n===4)chRender()}}
+chRender();
 // ---- 줌 (핀치 / 버튼 / ctrl+휠) ----
 let ZW=1100;
 function setZoom(nw,cx,cy){const w=document.getElementById("wrap");nw=Math.min(2800,Math.max(520,nw));const r=nw/ZW,x=(w.scrollLeft+cx)*r-cx,y=(w.scrollTop+cy)*r-cy;ZW=nw;document.getElementById("map").style.width=nw+"px";w.scrollLeft=x;w.scrollTop=y}
