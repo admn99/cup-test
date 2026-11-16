@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -71,6 +72,33 @@ body{padding-bottom:104px}
 #nav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:6px;max-width:760px;margin:0 auto;background:var(--card);border-radius:22px 22px 0 0;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 18px rgba(58,79,155,.14)}
 #nav button{flex:1;border:0;background:transparent;border-radius:14px;padding:11px 0;color:var(--sub);font-size:26px;line-height:1;display:flex;justify-content:center}
 #nav button.on{color:var(--pri);background:rgba(58,79,155,.1)}
+#nav button{position:relative}
+.bdg{position:absolute;top:4px;left:calc(50% + 6px);min-width:17px;height:17px;border-radius:9px;background:#e5323b;color:#fff;font-size:11px;font-weight:800;line-height:17px;text-align:center;box-shadow:0 0 0 2px var(--card);animation:bdp 1.6s ease-in-out infinite}
+@keyframes bdp{50%{transform:scale(1.18)}}
+.dg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.dgt{font-size:21px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;-webkit-tap-highlight-color:transparent}.dgt i{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--sp);color:var(--sub);margin-right:10px;flex:none}
+.nh{display:flex;justify-content:space-between;align-items:baseline}
+.nrs{display:flex;gap:6px;margin:8px 0}.nrs button{flex:1;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:8px 4px;font:inherit;font-size:13px;font-weight:700}.nrs button.s{border-color:var(--pri);background:rgba(58,79,155,.1);color:var(--pri)}
+.nl{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left;border:0;border-top:1px solid var(--bd);background:transparent;color:var(--tx);padding:11px 2px;font:inherit;font-size:14px}
+.nb{display:block;width:100%;margin-top:10px;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:10px;font:inherit;font-size:14px;font-weight:700}
+.dg3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+button.dc{border:0;font:inherit;color:var(--tx);width:100%}
+.meet{display:block;width:100%;margin-top:14px;border-radius:16px;padding:16px 18px;font-size:18px;font-weight:800;animation:meetp 1.4s ease-out infinite}
+@keyframes meetp{0%{box-shadow:0 0 0 0 rgba(58,79,155,.55)}70%,100%{box-shadow:0 0 0 14px rgba(58,79,155,0)}}
+@media(prefers-reduced-motion:reduce){.meet{animation:none}}
+.dc{background:var(--sp);border-radius:14px;padding:10px 4px 8px;text-align:center}.dc .dn{font-size:13px;font-weight:700;margin-top:4px}.dc.lk .dn{color:var(--sub)}
+#rv{position:fixed;inset:0;z-index:300;background:rgba(20,26,56,.92);display:flex;align-items:center;justify-content:center;padding:20px;animation:rvi .4s}
+#rv.flash{animation:rvf .5s}
+@keyframes rvi{from{opacity:0}}
+@keyframes rvf{0%{background:#fff}100%{background:rgba(20,26,56,.92)}}
+.rvb{text-align:center;color:#fff}.rvb .m{color:#cfd6f5}
+.rvt{font-size:19px;font-weight:800;margin-bottom:18px;min-height:28px}
+.rvs{animation:rvs .5s ease-in-out infinite}
+.rvs.pop{animation:rvp .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes rvs{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-7px) rotate(-5deg)}75%{transform:translateX(7px) rotate(5deg)}}
+@keyframes rvp{from{transform:scale(.2)}to{transform:scale(1)}}
+.rvn{font-size:20px;margin-top:6px}
+@media(prefers-reduced-motion:reduce){.rvs,.bdg{animation:none}}
 #nav .ic{display:block;width:1em;height:1em;margin:0;vertical-align:0}
 #calp{position:fixed;inset:0;z-index:70;background:var(--bg);overflow:auto}
 #calc{max-width:760px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top,0px)) 16px 40px}
@@ -83,10 +111,12 @@ body{padding-bottom:104px}
 .cname{display:block;margin:6px auto;width:9em;text-align:center;font:inherit;font-size:20px;font-weight:700;border:0;border-bottom:2px dashed var(--bd);background:transparent;color:var(--tx);padding:4px}
 .cbar{height:16px;border:2px solid var(--pri);border-radius:4px;margin:8px auto;max-width:260px;padding:1px}
 .cbar i{display:block;height:100%;background:var(--pri)}
+.off{background:var(--bd);color:var(--sub);border-color:transparent;cursor:not-allowed}
+.dot{display:inline-block;width:22px;height:22px;border-radius:50%;border:2px solid var(--pri);margin-left:6px;vertical-align:middle}.dot.on{background:var(--pri)}
 </style></head><body>
 <h1>가대 캠퍼스 컵 반납함</h1>
 <div id="t1">
-<button id="loc"><span data-ic="pin"></span>내 위치에서 가장 가까운 반납함 찾기</button>
+<button id="loc"><span data-ic="pin"></span>내 주변 반납함 찾기</button>
 <div class="row" id="flt"></div>
 <div style="position:relative"><div class="zb"><button id="zi" aria-label="확대">+</button><button id="zo" aria-label="축소">−</button></div><div id="wrap"><svg id="map" viewBox="0 250 1823 980"></svg></div></div>
 <div class="lg"><span data-ic="sq"></span>일반 · <span data-ic="star"></span>QR · <span data-ic="tri"></span>음료수거함 · <span data-ic="circ"></span>텀블러 세척기<br>일반·QR 핀 색: <span data-ic="ok"></span>여유 · <span data-ic="mid"></span>보통 · <span data-ic="full"></span>가득 참 · <span data-ic="none"></span>제보 없음</div>
@@ -145,13 +175,13 @@ const P=[
 ["Q1","Q",232,1023,"김수환관","식당"],["Q2","Q",344,1103,"김수환관",""],["Q3","Q",378,1025,"김수환관","2층"],
 ["Q4","Q",186,929,"김수환관","기숙사 로비"],["Q5","Q",574,870,"니콜스관","4층"],["Q6","Q",952,726,"학생미래인재관","2층 카페 맞은편"],
 ["Q7","Q",895,501,"미카엘관","우리은행 ATM 옆"],["Q8","Q",1058,503,"중앙도서관","2층"],["Q9","Q",1205,505,"중앙도서관","2층"],
-["음료수거함","D",272,1023,"김수환관","식당 앞"],["음료수거함","D",615,871,"니콜스관","4층"],["음료수거함","D",911,730,"학생미래인재관","2층"],
-["텀블러 세척기","W",187,1024,"김수환관","식당"],["텀블러 세척기","W",1017,501,"중앙도서관","2층"]];
+["음료수거함","D",272,1023,"김수환관","식당 앞"],["음료수거함","D",615,871,"니콜스관","4층"],["음료수거함","D",790,711,"학생미래인재관","1층 · 일반반납함 옆"],["음료수거함","D",911,730,"학생미래인재관","2층"],
+["텀블러 세척기","W",187,1024,"김수환관","식당"],["텀블러 세척기","W",1017,501,"중앙도서관","2층 · QR반납함 옆"],["텀블러 세척기","W",1165,505,"중앙도서관","2층 · QR반납함 옆"]];
 const COL={G:"#e53935",Q:"#2f6fe0",D:"#2e9e4f",W:"#f2c200"};
 const NAME={G:"일반반납함",Q:"QR반납함",D:"음료수거함 (잔여 음료 비우는 곳)",W:"텀블러 세척기"};
 // GPS 보정용: 지도 모서리의 실제 위도/경도 (임시값 → 실제 좌표로 교체 필요)
 const GEO={latTop:37.487979,latBot:37.484006,lngL:126.794232,lngR:126.803522,x0:0,x1:1823,y0:250,y1:1230};
-let sel=null,filt="ALL",me=null,ST={};
+let sel=null,filt="ALL",me=null,ST={},near=null,NR=100,meAcc=0;
 try{ST=JSON.parse(localStorage.getItem("cupst")||"{}")}catch(e){}
 const svg=document.getElementById("map"),NS="http://www.w3.org/2000/svg";
 function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
@@ -191,12 +221,23 @@ function draw(){
 let h="";
 h+=BASE;
 const vis=i=>filt==="ALL"||P[i][1]===filt,dim=sel!==null&&vis(sel);
-P.forEach((p,i)=>{if(!vis(i)||i===sel)return;h+=`<g class="pin" data-i="${i}" opacity="${dim?.45:1}" transform="translate(${PT[i].x} ${PT[i].y})">${pinSvg(p)}<circle r="34" fill="transparent"/></g>`});
+if(me&&near){const mpu=metersPerUnit();if(meAcc>25)h+=`<circle cx="${me.x}" cy="${me.y}" r="${Math.min(meAcc,400)/mpu}" fill="none" stroke="#00b0ff" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round" opacity=".6"/>`;
+h+=`<circle cx="${me.x}" cy="${me.y}" r="${NR/mpu}" fill="rgba(0,176,255,.13)" stroke="#00a2ec" stroke-width="5" stroke-dasharray="16 10"/>`}
+P.forEach((p,i)=>{if(!vis(i)||i===sel)return;const inn=near&&near.includes(i);h+=`<g class="pin" data-i="${i}" opacity="${near?(inn?1:.3):dim?.45:1}" transform="translate(${PT[i].x} ${PT[i].y})">${inn?'<circle r="34" fill="rgba(0,176,255,.25)" stroke="#00a2ec" stroke-width="5"/>':""}${pinSvg(p)}<circle r="34" fill="transparent"/></g>`});
 if(sel!==null&&vis(sel))h+=selMark(sel);
 if(me)h+=`<circle cx="${me.x}" cy="${me.y}" r="18" fill="#00b0ff" stroke="#fff" stroke-width="6"/>`;
 svg.innerHTML=h;
 svg.querySelectorAll(".pin").forEach(g=>g.onclick=()=>{const i=+g.dataset.i;if(sel===i)deselect();else pick(i,true)})}
-function deselect(){sel=null;draw();document.getElementById("card").innerHTML='<span class="m">지도의 핀을 눌러 보세요.</span>'}
+function deselect(){sel=null;draw();if(near)nearCard();else document.getElementById("card").innerHTML='<span class="m">지도의 핀을 눌러 보세요.</span>'}
+const SHORT={G:"일반",Q:"QR",D:"음료수거함",W:"세척기"};
+function inNear(){const r=NR/metersPerUnit();return P.map((p,i)=>i).filter(i=>(filt==="ALL"||P[i][1]===filt)&&dist(me,{x:P[i][2],y:P[i][3]})<=r).sort((a,b)=>dist(me,{x:P[a][2],y:P[a][3]})-dist(me,{x:P[b][2],y:P[b][3]}))}
+function nearCard(){
+const c=document.getElementById("card"),mpu=metersPerUnit();
+const rows=near.map(i=>{const p=P[i],m=Math.round(dist(me,{x:p[2],y:p[3]})*mpu),nm=p[1]==="G"||p[1]==="Q"?p[4]+(p[5]?" · "+p[5]:""):p[0],stt=p[1]==="G"||p[1]==="Q"?(OUT[p[0]]?"사용 불가":ST[p[0]]?({ok:"여유",mid:"보통",full:"가득 참"})[ST[p[0]].v]:"제보 없음"):"";
+return `<button class="nl" data-i="${i}"><span><b>${escH(nm)}</b><span class="m"> ${SHORT[p[1]]}${stt?" · "+stt:""}</span></span><span class="m">${m}m</span></button>`}).join("");
+c.innerHTML=`<div class="nh"><h2 style="margin:0">내 주변 ${NR}m</h2><span class="m">반납함 ${near.length}곳</span></div><div class="nrs">${[50,100,200].map(r=>`<button class="${r===NR?"s":""}" data-r="${r}">${r}m</button>`).join("")}<button data-r="0">닫기</button></div>${rows||'<div class="m" style="margin-top:8px">이 범위 안에는 반납함이 없어요. 범위를 넓혀 보세요.</div>'}${meAcc>40?`<div class="m" style="margin-top:8px">위치 정확도가 ±${Math.round(meAcc)}m예요. 실제 위치와 다를 수 있어요.</div>`:""}`;
+c.querySelectorAll(".nl").forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+c.querySelectorAll(".nrs button").forEach(b=>b.onclick=()=>{const r=+b.dataset.r;if(!r){near=null;sel=null;draw();c.innerHTML='<span class="m">지도의 핀을 눌러 보세요.</span>';return}NR=r;near=inNear();sel=null;draw();nearCard()})}
 function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
 function metersPerUnit(){const c=cc();return 1/Math.hypot(c.ar,c.ai)}
 function pick(i,center){
@@ -206,15 +247,16 @@ let h=`<h2>${k==="G"||k==="Q"?b+(n?" · "+n:""):id}</h2><div class="m">${k==="G"
 if(me){const m=Math.round(dist(me,{x,y})*metersPerUnit());h+=`<div class="m">내 위치에서 직선 약 ${m}m (도보 약 ${Math.max(1,Math.round(m/70))}분)</div>`}
 if(OUT[id]){h+=`<div style="margin-top:6px;font-weight:700;color:#e53935">${OUT[id]}</div>`}else if(k==="G"||k==="Q"){
 const s=ST[id];h+=`<div class="m" style="margin-top:6px">${s?"최근 제보: "+({ok:"여유",mid:"보통",full:"가득 참"})[s.v]+" ("+s.t+")":"아직 제보가 없어요"}</div>
-<div class="st"><button class="on" onclick="openRep('${id}')">제보하기</button></div>`;
+<div class="st">${repBtn(id)}</div>`;
 if(k==="G")h+=`<div class="m" style="margin-top:6px">뚜껑·컵홀더를 분리하고 남은 음료는 비운 뒤 반납해 주세요.</div>`}
-document.getElementById("card").innerHTML=h}
+document.getElementById("card").innerHTML=h;
+if(near){const c=document.getElementById("card"),b=document.createElement("button");b.className="nb";b.textContent="주변 목록으로";b.onclick=()=>{sel=null;draw();nearCard()};c.appendChild(b)}}
 function rep(id,v){const d=new Date();ST[id]={v,t:(d.getMonth()+1)+"/"+d.getDate()+" "+d.getHours()+":"+String(d.getMinutes()).padStart(2,"0")};
 try{localStorage.setItem("cupst",JSON.stringify(ST))}catch(e){}if(sel!==null)pick(sel,false);else draw();renderB()}
 // 필터
 [["ALL","전체"],["G","일반"],["Q","QR"],["D","음료수거함"],["W","세척기"]].forEach(([k,l])=>{
 const b=document.createElement("button");b.textContent=l;if(k==="ALL")b.className="on";
-b.onclick=()=>{filt=k;[...document.querySelectorAll("#flt button")].forEach(x=>x.className="");b.className="on";draw()};
+b.onclick=()=>{filt=k;[...document.querySelectorAll("#flt button")].forEach(x=>x.className="");b.className="on";if(near){near=inNear();sel=null;draw();nearCard()}else draw()};
 document.getElementById("flt").appendChild(b)});
 // 내 위치
 document.getElementById("loc").onclick=()=>{
@@ -222,12 +264,12 @@ const c=document.getElementById("card");
 if(!navigator.geolocation){c.textContent="이 기기에서는 위치 기능을 쓸 수 없어요.";return}
 c.textContent="위치 확인 중...";
 navigator.geolocation.getCurrentPosition(pos=>{
-const{latitude:la,longitude:lo}=pos.coords;
-me=gpsToMap(la,lo);
-let bi=-1,bd=1e9;P.forEach((p,i)=>{if(p[1]!=="G"&&p[1]!=="Q"||OUT[p[0]])return;if(filt==="G"&&p[1]!=="G"||filt==="Q"&&p[1]!=="Q")return;
-const d=dist(me,{x:p[2],y:p[3]});if(d<bd){bd=d;bi=i}});
-if(bd*metersPerUnit()>1500){draw();c.textContent="캠퍼스 밖에 계신 것 같아요. 핀을 눌러 위치를 확인해 보세요.";return}
-pick(bi,true)},()=>{c.textContent="위치 권한이 거부되었어요. 지도에서 핀을 직접 눌러 확인해 주세요."},{enableHighAccuracy:true,timeout:10000})};
+const{latitude:la,longitude:lo,accuracy:ac}=pos.coords;
+me=gpsToMap(la,lo);meAcc=ac||0;
+if(me.x<-600||me.x>2400||me.y<-100||me.y>1500){near=null;draw();c.textContent="캠퍼스 밖에 계신 것 같아요. 핀을 눌러 위치를 확인해 보세요.";return}
+near=inNear();sel=null;draw();nearCard();
+{const w=document.getElementById("wrap"),f=ZW/1823;w.scrollTo({left:me.x*f-w.clientWidth/2,top:(me.y-250)*f-w.clientHeight/2,behavior:"smooth"})}
+},()=>{c.textContent="위치 권한이 거부되었어요. 지도에서 핀을 직접 눌러 확인해 주세요."},{enableHighAccuracy:true,timeout:10000})};
 // ---- 탭 / 건물별 ----
 const BC={"김수환관":"#d99a4e","안드레아관":"#e08c78","니콜스관":"#c4547a","다솔관":"#8a5a9a","학생미래인재관":"#e2a0b4","미카엘관":"#7e57a8","중앙도서관":"#4f8f86","약학관":"#5c7bc4","성심관":"#c47a4a","콘서트홀":"#6a8a5a"};
 const LT={"김수환관":"K","니콜스관":"N","다솔관":"D","약학관":"NP","성심관":"SH","콘서트홀":"CH","안드레아관":"A","학생미래인재관":"B","미카엘관":"T","중앙도서관":"L"};
@@ -245,7 +287,7 @@ let h=`<div style="margin:4px 0"><b>${bsel}</b> · 반납함 ${av.length}곳</di
 h+=`<div class="tip" style="font-weight:700;color:${hasD?"#2e9e4f":"#e53935"}">이 건물에는 음료수거함이 ${hasD?"있어요":"없어요"}.</div>`;
 bins.forEach(i=>{const [id,k,x,y,b,n]=P[i];
 h+=`<div class="bc"><b>${NAME[k]}</b><div class="m">${n||"위치 상세 준비 중"}</div><div class="m" style="margin-top:4px">${OUT[id]?`<span style="color:#e53935;font-weight:700">${OUT[id]}</span>`:stTxt(id)}</div>
-<div class="st">${OUT[id]?"":`<button class="on" onclick="openRep('${id}')">제보하기</button> `}<button onclick="tab(1);pick(${i},true)">${I("pin")}지도에서 보기</button></div></div>`});
+<div class="st">${OUT[id]?"":repBtn(id)+" "}<button onclick="tab(1);pick(${i},true)">${I("pin")}지도에서 보기</button></div></div>`});
 if(!bins.length)h+=`<div class="bc m">이 건물에는 등록된 반납함이 없어요.</div>`;
 oth.forEach(i=>{const [id,k,x,y,b,n]=P[i];h+=`<div class="bc"><b style="color:${COL[k]}">${id}</b><div class="m">${n}</div></div>`});
 document.getElementById("bdet").innerHTML=h}
@@ -287,6 +329,18 @@ if(dh)h+=`<h3 style="font-size:15px;margin:14px 0 0">${d}요일</h3>`+dh});
 msg.textContent=n?`이동 구간 ${n}곳을 분석했어요.`:"연속된 수업이 없어서 추천할 구간이 없어요.";
 if(unk.size)msg.textContent+=` 위치를 모르는 건물(${[...unk].map(l=>BX[l]?BX[l][0]:l+"동").join(", ")})이 포함된 구간은 제외했어요.`;
 out.innerHTML=h}
+// ---- 제보 제한: 같은 반납함 30분에 한 번 (캐릭터 먹이는 하루 2번) ----
+const GROW_DAY=2,REP_GAP=30;
+let CHR={name:"컵이",count:0,last:0,bin:{},day:"",today:0,id:0,raised:[0],done:[],badge:false};
+try{CHR=Object.assign(CHR,JSON.parse(localStorage.getItem("cupchar")||"{}"))}catch(e){}
+if(!Array.isArray(CHR.raised)||!CHR.raised.length)CHR.raised=[0];if(!Array.isArray(CHR.done))CHR.done=[];if(typeof CHR.id!=="number"||CHR.id>3)CHR.id=0;if(!CHR.raised.includes(CHR.id))CHR.raised.push(CHR.id);
+function dk(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
+function repGate(id){
+const now=Date.now();
+const left=Math.ceil((REP_GAP*60000-(now-(CHR.bin[id]||0)))/60000);
+if(left>0)return{ok:false,msg:`약 ${left}분 뒤에 다시 제보할 수 있어요`};
+return{ok:true}}
+function repBtn(id){const g=repGate(id);return g.ok?`<button class="on" onclick="openRep('${id}')">제보하기</button>`:`<button class="off" disabled>제보하기</button><div class="m" style="margin-top:4px">${g.msg}</div>`}
 renderTT();
 renderB();
 draw();
@@ -294,7 +348,7 @@ document.querySelectorAll("[data-ic]").forEach(e=>{e.innerHTML=I(e.dataset.ic)})
 (function(){const w=document.getElementById("wrap"),f=1100/1823;w.scrollLeft=Math.max(0,450*f-w.clientWidth/2);w.scrollTop=Math.max(0,(930-250)*f-w.clientHeight/2)})();
 // ---- 제보 팝업 ----
 let rid=null,rv=null;
-function openRep(id){rid=id;rv=null;const p=P.find(q=>q[0]===id);
+function openRep(id){const g=repGate(id);if(!g.ok){toast(g.msg);return}rid=id;rv=null;const p=P.find(q=>q[0]===id);
 document.getElementById("ssub").textContent=p[4]+(p[5]?" · "+p[5]:"")+" · "+NAME[p[1]];
 const O=[["ok","여유","컵을 넣을 자리가 충분해요"],["mid","보통","반쯤 찼지만 아직 넣을 수 있어요"],["full","가득 참","넘치거나 더 넣기 어려워요"]];
 document.getElementById("sopts").innerHTML=O.map(o=>`<button class="so" data-v="${o[0]}">${I(o[0])}<span>${o[1]}<br><span class="m" style="font-weight:400">${o[2]}</span></span></button>`).join("");
@@ -303,10 +357,10 @@ document.getElementById("sok").disabled=true;document.getElementById("sheet").hi
 function closeRep(){document.getElementById("sheet").hidden=true}
 function toast(t){const e=document.getElementById("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>{e.hidden=true},2200)}
 document.getElementById("scx").onclick=closeRep;document.getElementById("sbk").onclick=closeRep;
-document.getElementById("sok").onclick=()=>{if(rid&&rv){rep(rid,rv);const fr=feed(rid);closeRep();toast(FM[fr])}};
+document.getElementById("sok").onclick=()=>{if(rid&&rv&&repGate(rid).ok){const fr=feed(rid);rep(rid,rv);closeRep();toast(FM[fr])}else closeRep()};
 // ---- GPS 보정 모드 (숨김: 제목 5번 연속 탭 또는 주소 끝에 #calibrate) ----
 const byId=id=>document.getElementById(id);
-const DEFCAL={lat0:37.487055,lng0:126.800042,ar:1/0.45,ai:0,br:1140,bi:-478};
+const DEFCAL={lat0:37.48630111458303,lng0:126.80150809245681,ar:-1.508096374894282,ai:-2.2814572994153726,br:755.4,bi:-739.0};
 let CAL=null,CP=[];
 try{CAL=JSON.parse(localStorage.getItem("cupcal")||"null")}catch(e){}
 try{CP=JSON.parse(localStorage.getItem("cupcalpts")||"[]")}catch(e){}
@@ -332,7 +386,7 @@ byId("calpts").innerHTML=CP.length?`<div class="bc" style="margin-top:10px"><b>�
 const f=calFit();let h="";
 if(CP.length<2)h=`<div class="m" style="margin-top:10px">2곳 이상(가능하면 3곳 이상) 측정하면 계산해 드려요.</div>`;
 else if(!f)h=`<div class="m" style="margin-top:10px;color:#e53935">측정한 지점들이 너무 가까워요. 더 멀리 떨어진 곳을 측정해 주세요.</div>`;
-else{const bad=Math.abs(f.rot)>25||f.scale<.25||f.scale>1.2;h=`<div class="bc"><b>계산 결과</b><div class="m" style="margin-top:4px">지도 1칸 ≈ ${f.scale.toFixed(2)}m · 지도 기울기 ${f.rot.toFixed(1)}°<br>지점별 오차: ${f.res.map(r=>r.toFixed(0)+"m").join(", ")}</div>${bad?`<div style="color:#e53935;margin-top:6px;font-size:13px;font-weight:700">값이 이상해요. 측정한 위치가 맞는지 확인하고 다시 측정해 주세요.</div>`:""}</div>`}
+else{const bad=f.scale<.2||f.scale>.8||Math.max(...f.res)>80;h=`<div class="bc"><b>계산 결과</b><div class="m" style="margin-top:4px">지도 1칸 ≈ ${f.scale.toFixed(2)}m · 지도 회전 ${f.rot.toFixed(0)}° (지도가 북쪽 기준이 아니어도 정상)<br>지점별 오차: ${f.res.map(r=>r.toFixed(0)+"m").join(", ")}</div>${bad?`<div style="color:#e53935;margin-top:6px;font-size:13px;font-weight:700">값이 이상해요. 측정한 위치가 맞는지 확인하고 다시 측정해 주세요.</div>`:""}</div>`}
 byId("calres").innerHTML=h}
 function calDel(i){CP.splice(i,1);saveCP();calRender()}
 function openCal(){byId("calp").hidden=false;calRender()}
@@ -355,38 +409,70 @@ if(location.hash==="#calibrate")openCal();
 window.addEventListener("hashchange",()=>{if(location.hash==="#calibrate")openCal()});
 // ---- 캐릭터 키우기 (도트) ----
 const PAL={o:"#2b3a7a",w:"#ffffff",s:"#cfdcf5",l:"#6f94ff",h:"#b9ceff",e:"#1e2433",c:"#ff9fb0",m:"#7a2e3b",y:"#ffd24a",b:"#9dbaff",f:"#6f94ff"};
-const TH=[0,2,5],SN=["아기 컵","아기 컵","어린 컵","어른 컵"],MSG=["오늘도 반납 고마워요!","컵은 꼭 비우고 반납해요!","제보 덕분에 모두 편해져요."];
-const FM={ok:"제보 완료! 캐릭터가 밥을 먹었어요.",grow:"제보 완료! 캐릭터가 성장했어요!",dup:"제보 완료! 같은 반납함은 10분 뒤에 다시 먹일 수 있어요.",cap:"제보 완료! 오늘은 더 먹일 수 없어요. (하루 10번)"};
-let CHR={name:"컵이",count:0,last:0,bin:{},day:"",today:0};
-try{CHR=Object.assign(CHR,JSON.parse(localStorage.getItem("cupchar")||"{}"))}catch(e){}
+const TH=[0,2,4],MSG=["오늘도 반납 고마워요!","컵은 꼭 비우고 반납해요!","제보 덕분에 모두 편해져요."];
+const FM={ok:"제보 완료! 캐릭터에게 먹이를 줬어요.",grow:"제보 완료! 캐릭터가 성장했어요!",cap:"제보 완료!",full:"제보 완료! 캐릭터가 다 자랐어요. 새 친구를 만나 보세요!"};
 const chSave=()=>{try{localStorage.setItem("cupchar",JSON.stringify(CHR))}catch(e){}};
 const stageOf=n=>n>=TH[2]?3:n>=TH[1]?2:1;
 const dayKey=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
 const escH=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-function chGrid(st,mood){
+function chGrid(st){
 const mo=["wwmmww","wwwwwwww"];
 const body=["owwwwwwwwo","owewwwwewo","oc"+mo[0]+"co","o"+mo[1]+"o","owwwwwwwwo","osswwwwsso","osssssso","oooooo"];
 if(st>=2){body[2]="b"+body[2]+"b";body[3]="b"+body[3]+"b"}
 const top=st===2?["oyyo"]:st===3?["y.yy.y","yyyyyy"]:[];
 return top.concat(["oooooooooooo","ollhhllllllo","oooooooooooo"],body,st>=2?["ff..ff","oo..oo"]:[])}
-function chSvg(st,mood){
-const rows=chGrid(st,mood),t0=16-rows.length;let r="";
-rows.forEach((row,j)=>{const x0=Math.floor((16-row.length)/2);let i=0;while(i<row.length){const c=row[i];if(c==="."){i++;continue}let k=i;while(k<row.length&&row[k]===c)k++;r+=`<rect x="${x0+i}" y="${t0+j}" width="${k-i}" height="1" fill="${PAL[c]}"/>`;i=k}});
-return `<svg viewBox="0 0 16 16" shape-rendering="crispEdges" width="208" height="208" class="cpx">${r}</svg>`}
+const CHARS=[{n:"컵이",sn:["아기 컵","어린 컵","어른 컵"],p:PAL}].concat([{"n":"냥이","sn":["털뭉치","아기 고양이","고양이"],"g":[["................","................","................","................","................","................","................","................",".....oooooo.....","....occcccco....","...occcccccco...","..occcccccccco..","..odccecceccdo..","...ocbccccbco...","...oddccccddo...","....ooddddoo...."],["................","................","................","................","....o......o....","...oco....oco...","...opcoooocpo...","...occsssscco...","...occcssccco...","..occccccccccoo.","..ossccccccssoso","..occcecceccdoso","..obbccccccbboso","...odsccccsdocco","....oodssdoo.oo.","......oooo......"],["...o........o...","..oco......oco..","..opcoooooocpo..","..opccsccsccpo..","..occscsscscco..",".occcccccccccco.",".occcccccccccco.",".ocsehcccchesco.",".odceecccceecdo.",".obbccccccccbbo.","..ooccccccccoo..","...odrrrrrrdo...","..oddccyyccddo..","..oddcllllcddoo.","...odccllcccooco","....oddllddddddo"]],"p":{"c":"#8c7866","d":"#6d5c4e","s":"#4d4036","o":"#2a2420","e":"#2d2624","b":"#ff9fa0","p":"#ff9fb0","l":"#a8998a","w":"#efe8de","y":"#ffd24a","r":"#c0504a","h":"#ffffff"}},{"n":"양","sn":["마시멜로","아기 양","커다란 양"],"g":[["................","................","................","................","................","................",".....oooooo.....","....owwwwwwo....","...owwwwwwwwo...","..owwwWWWWwwwo..","..owwWWWWWWwso..","..oswWeWWeWwso..","...osbWmmWbso...","....onnnnnno....",".....oonnono....",".......oo.o....."],["................","................","................",".......oo.......",".....oowwoo.....","....owwwwwwo....","...owwwwwwwwo...","...owwwwwwwwo...","...owwwwwwwwo...","..owwffffffwwo..",".oFwwfEffEfwwFo.",".oFswfeffefwsFo.","..oowbfmmfbsoo..","...osnnnnnnso...","....oonnnnno....",".....okooko....."],["................",".......oo.......","....ooowwooo....","...owwwwwwwwo...","..oowwwwwwwwoo..",".owwwwwwswwwwwo.",".owwwwwsswwwwwo.",".owwwffffffwwwo.",".owwffffffffwwo.",".FFwfEffffEfwFF.",".FFwfeffffefwFF.",".owsbbfmmfbbswo.",".onnnnnnnnnnnno.","..oooqqqqqqoqqo.","...oLLooooLLqqo.","...oLLo..oLLoo.."]],"p":{"o":"#3b3550","w":"#ffffff","s":"#d3dbf2","f":"#fbe8d4","F":"#fbe8d4","e":"#2a2238","E":"#ffffff","b":"#ff9fb0","m":"#7a2e3b","k":"#3b3550","y":"#ffd24a","n":"#2f4a9b","r":"#ff7a90","g":"#7ec27a","h":"#ffffff","D":"#5b5470","R":"#ffc6d0","W":"#fffaf2","N":"#e9eefc","L":"#6b5a8a","q":"#27408a"}},{"n":"눈사람","sn":["눈덩이","2단 눈사람","눈사람"],"g":[["................","................","................","................","................","................","................","......oooo......","....oowwwsoo....","...owwwwwwwso...","...owwwwwwwso...","...owwewwewso...","..oowbwwwwbsoo..",".owwwwwwwwwwwso.","ossssswwwwssssso",".ooooossssooooo."],["................","................",".......oo.......",".....oowwoo.....","....owwwwwwo....","....owewwewo....","....obwwwwbo....",".o..owweewwo..o.","oko.oowwwsoo.oko",".okowwwwwwwsoko.","..okwwweewwwko..","..owwwwwwwwwso..","..oswwweewwwso..","...oswwwwwwso...","....osssssso....",".....oooooo....."],[".....oMMMMo.....","....omMmmmmo....","....omMmmmmo....","...oDDDDDDDDo...","...owwwwwwwwo...","...owwewwewwo...","...osbwwwwbso...",".oo.owweewso.oo.","okkorrrrrrrrokko",".okwrRrrRrrrwko.","..okwwwwwwrrko..",".oswwwweewrrwso.","..owwwwwwwRRso..","..oswwweewwwso..","...osswwwwsso...","....oossssoo...."]],"p":{"o":"#2b3150","w":"#ffffff","s":"#d3e0f5","S":"#b6c8ea","e":"#2b3150","b":"#ffb3c0","n":"#f08a3a","k":"#7a5a3a","h":"#3a4f9b","H":"#566bc0","t":"#9fd4ff","r":"#d9483f","y":"#ffd24a","g":"#5fae6a","Y":"#fff3b0","R":"#a8302b","m":"#8d97a8","M":"#c9d1de","D":"#5f6879"}}]);
+const chRows=(id,st)=>id===0?chGrid(st):CHARS[id].g[st-1];
+function chSvg(st,mood,id,size,cls,sil){
+const c=CHARS[id]||CHARS[0],pal=c.p,rows=chRows(CHARS[id]?id:0,st),t0=16-rows.length;let r="";
+rows.forEach((row,j)=>{const x0=Math.floor((16-row.length)/2);let i=0;while(i<row.length){const ch=row[i];if(ch==="."){i++;continue}let k=i;while(k<row.length&&row[k]===ch)k++;r+=`<rect x="${x0+i}" y="${t0+j}" width="${k-i}" height="1" fill="${pal[ch]||"#000"}"/>`;i=k}});
+return `<svg viewBox="0 0 16 16" shape-rendering="crispEdges" width="${size||208}" height="${size||208}" class="${cls===undefined?"cpx":cls}" style="display:block;margin:0 auto${sil?";filter:brightness(0)":""}">${r}</svg>`}
+const chPool=()=>CHARS.map((_,i)=>i).filter(i=>!CHR.raised.includes(i));
+const chDone=()=>CHR.count>=TH[2];
+const dogamOpen=()=>CHR.done.length>0||(CHR.id===0&&chDone());
+const chAlert=()=>!!CHR.badge||(chDone()&&chPool().length>0);
+function chBadge(){const b=document.querySelector("#nav button:nth-child(4)");if(!b)return;let e=b.querySelector(".bdg");if(chAlert()){if(!e){e=document.createElement("span");e.className="bdg";e.textContent="!";b.appendChild(e)}}else if(e)e.remove()}
 function feed(id){
-const now=Date.now(),day=dayKey();if(CHR.day!==day){CHR.day=day;CHR.today=0}
-const prev=stageOf(CHR.count);let r="ok";
-if(now-(CHR.bin[id]||0)<10*60000)r="dup";
-else if(CHR.today>=10)r="cap";
-else{CHR.count++;CHR.today++;CHR.last=now;CHR.bin[id]=now;if(stageOf(CHR.count)>prev)r="grow"}
+const now=Date.now(),day=dk();if(CHR.day!==day){CHR.day=day;CHR.today=0}
+CHR.bin[id]=now;let r="ok";
+if(CHR.count>=TH[2])r="full";
+else if(CHR.today>=GROW_DAY)r="cap";
+else{const prev=stageOf(CHR.count);CHR.count++;CHR.today++;CHR.last=now;if(CHR.count>=TH[2]){r="full";CHR.badge=true}else if(stageOf(CHR.count)>prev){r="grow";CHR.badge=true}}
 chSave();chRender();return r}
+let dogam=false,dgSel=null;
+const chReach=i=>CHR.done.includes(i)?3:i===CHR.id?stageOf(CHR.count):CHR.raised.includes(i)?1:0;
+function meetNew(){
+if(!chDone())return;const pool=chPool();if(!pool.length)return;
+const nid=pool[Math.floor(Math.random()*pool.length)];
+if(!CHR.done.includes(CHR.id))CHR.done.push(CHR.id);
+CHR.id=nid;CHR.raised.push(nid);CHR.name=CHARS[nid].n;CHR.count=0;CHR.badge=false;chSave();chRender();revealNew(nid)}
+function revealNew(nid){
+const rv=document.createElement("div");rv.id="rv";
+rv.innerHTML=`<div class="rvb"><div class="rvt" id="rvt">누군가 다가오고 있어요...</div><div class="rvs" id="rvs">${chSvg(1,"ok",nid,176,"",true)}</div><div class="rvn" id="rvn"></div></div>`;
+document.body.appendChild(rv);
+setTimeout(()=>{byId("rvt").textContent="두근두근..."},900);
+setTimeout(()=>{rv.classList.add("flash");byId("rvs").innerHTML=chSvg(1,"ok",nid,176,"");byId("rvs").className="rvs pop";byId("rvt").textContent="새로운 캐릭터가 찾아왔어요!";byId("rvn").innerHTML=`<b>${escH(CHARS[nid].n)}</b><div class="m">${escH(CHARS[nid].sn[0])}부터 함께 키워요</div><button class="on" id="rvok" style="margin-top:14px;border-radius:12px;padding:12px 22px;font-size:15px">좋아요</button>`;byId("rvok").onclick=()=>rv.remove()},2600)}
 function chRender(){
-const n=CHR.count,st=stageOf(n),now=Date.now(),hungry=n>0&&now-CHR.last>72*3600e3,fed=n>0&&now-CHR.last<3600e3;
-const mood="ok",today=CHR.day===dayKey()?CHR.today:0;
-const nx=st<3?TH[st]:null,pv=st===0?0:TH[st-1],pct=nx?Math.round((n-pv)/(nx-pv)*100):100;
-byId("t4").innerHTML=`<div class="bc" style="text-align:center">${chSvg(st,mood)}<input id="chn" class="cname" maxlength="8" value="${escH(CHR.name)}" aria-label="이름"><div class="m">${SN[st]} · 총 제보 ${n}번</div><div class="cbar"><i style="width:${pct}%"></i></div><div class="m">${nx?"다음 성장까지 "+(nx-n)+"번":"다 자랐어요!"}</div></div><div class="bc m">오늘 먹이 ${Math.min(today,10)}/10 · 같은 반납함은 10분에 한 번만 인정돼요.</div>`;
-byId("chn").onchange=e=>{CHR.name=e.target.value.trim().slice(0,8)||"컵이";chSave()}}
-{const _t=tab;tab=n=>{_t(n);if(n===4)chRender()}}
+if(!byId("t4").hidden&&CHR.badge){CHR.badge=false;chSave()}
+const id=CHR.id,C=CHARS[id],n=CHR.count,st=stageOf(n),today=CHR.day===dk()?CHR.today:0,done=n>=TH[2];
+const nx=done?null:TH[st],pv=TH[st-1]||0,pct=done?100:Math.round((n-pv)/(nx-pv)*100);
+if(dogam&&dogamOpen()){
+const seen=CHR.raised,have=CHARS.filter((_,i)=>seen.includes(i)).length;
+if(dgSel!==null){const i=dgSel,C2=CHARS[i],rc=chReach(i);
+byId("t4").innerHTML=`<div class="bc"><div style="display:flex;justify-content:space-between;align-items:center"><span class="dgt" id="dgb" role="button" tabindex="0" aria-label="뒤로"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></i>${rc?escH(C2.n):"???"}</span><span class="m">${rc} / 3단계</span></div><div class="dg3">${[1,2,3].map(s=>{const ok=s<=rc;return `<div class="dc${ok?"":" lk"}">${chSvg(s,"ok",i,84,"",!ok)}<div class="dn">${ok?escH(C2.sn[s-1]):"???"}</div></div>`}).join("")}</div></div>`;
+byId("dgb").onclick=()=>{dgSel=null;chRender()};chBadge();return}
+byId("t4").innerHTML=`<div class="bc"><div style="display:flex;justify-content:space-between;align-items:center"><span class="dgt" id="dgb" role="button" tabindex="0" aria-label="뒤로"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></i>캐릭터 도감</span><span class="m">${have} / ${CHARS.length}</span></div><div class="dg">${CHARS.map((c,i)=>{const rc=chReach(i);return `<button class="dc${rc?"":" lk"}" data-i="${i}" aria-label="${rc?escH(c.n):"???"}">${chSvg(rc||3,"ok",i,84,"",!rc)}<div class="dn">${rc?escH(c.n):"???"}</div></button>`}).join("")}</div></div>`;
+byId("dgb").onclick=()=>{dogam=false;chRender()};
+document.querySelectorAll(".dc[data-i]").forEach(b=>b.onclick=()=>{dgSel=+b.dataset.i;chRender()});chBadge();return}
+dogam=false;dgSel=null;
+const pool=chPool(),ico='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M9 7h6"/></svg>';
+const act=done?(pool.length?'<button class="on meet" id="gacha">새 친구 만나기</button>':'<div class="m" style="margin-top:8px">모든 캐릭터를 만났어요!</div>'):"";
+byId("t4").innerHTML=`<div class="bc" style="text-align:center;position:relative"><button id="dgo" aria-label="도감" ${dogamOpen()?"":"disabled"} style="position:absolute;top:8px;right:8px;border:0;background:var(--sp);color:var(--pri);border-radius:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;${dogamOpen()?"":"opacity:.35"}">${ico}</button>${chSvg(st,"ok",id)}<input id="chn" class="cname" maxlength="8" value="${escH(CHR.name)}" aria-label="이름"><div class="m">${escH(C.sn[st-1])} · 먹은 횟수 ${n}번</div><div class="cbar"><i style="width:${pct}%"></i></div><div class="m">${done?"다 자랐어요!":"다음 성장까지 "+(nx-n)+"번"}</div>${act}</div><div class="bc"><div style="display:flex;justify-content:space-between;align-items:center"><b>오늘 먹이</b><span>${Array.from({length:GROW_DAY},(_,i)=>`<i class="dot${i<today?" on":""}"></i>`).join("")}</span></div><div class="m" style="margin-top:6px">${today>=GROW_DAY?"오늘은 배불러요. 내일 또 만나요!":"제보하면 먹이를 줄 수 있어요."}</div></div>`;
+byId("chn").onchange=e=>{CHR.name=e.target.value.trim().slice(0,8)||C.n;chSave()};
+byId("dgo").onclick=()=>{if(dogamOpen()){dogam=true;chRender()}};
+if(byId("gacha"))byId("gacha").onclick=meetNew;
+chBadge()}
+{const _t=tab;tab=n=>{_t(n);if(n===4){dogam=false;if(CHR.badge){CHR.badge=false;chSave()}chRender()}}}
 chRender();
 // ---- 줌 (핀치 / 버튼 / ctrl+휠) ----
 let ZW=1100;
@@ -402,3 +488,4 @@ w.addEventListener("touchend",()=>{ld=0});
 w.addEventListener("wheel",e=>{if(e.ctrlKey){e.preventDefault();const r=w.getBoundingClientRect();setZoom(ZW*(e.deltaY<0?1.1:1/1.1),e.clientX-r.left,e.clientY-r.top)}},{passive:false});
 })();
 </script></body></html>
+</body></html>
