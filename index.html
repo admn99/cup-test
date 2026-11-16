@@ -77,9 +77,10 @@ body{padding-bottom:104px}
 @keyframes bdp{50%{transform:scale(1.18)}}
 .dg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
 .dgt{font-size:21px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;-webkit-tap-highlight-color:transparent}.dgt i{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--sp);color:var(--sub);margin-right:10px;flex:none}
-.nh{display:flex;justify-content:space-between;align-items:baseline}
+.nh{display:flex;justify-content:space-between;align-items:center}
 .nrs{display:flex;gap:6px;margin:8px 0}.nrs button{flex:1;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:8px 4px;font:inherit;font-size:13px;font-weight:700}.nrs button.s{border-color:var(--pri);background:rgba(58,79,155,.1);color:var(--pri)}
-.nl{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left;border:0;border-top:1px solid var(--bd);background:transparent;color:var(--tx);padding:11px 2px;font:inherit;font-size:14px}
+.nl{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left;border:0;border-top:1px solid var(--bd);border-radius:0;background:transparent;color:var(--tx);padding:11px 6px;font:inherit;font-size:14px}
+.nx{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:var(--sp);color:var(--sub);display:inline-flex;align-items:center;justify-content:center;padding:0}
 .nb{display:block;width:100%;margin-top:10px;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:10px;font:inherit;font-size:14px;font-weight:700}
 .dg3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
 button.dc{border:0;font:inherit;color:var(--tx);width:100%}
@@ -235,9 +236,9 @@ function nearCard(){
 const c=document.getElementById("card"),mpu=metersPerUnit();
 const rows=near.map(i=>{const p=P[i],m=Math.round(dist(me,{x:p[2],y:p[3]})*mpu),nm=p[1]==="G"||p[1]==="Q"?p[4]+(p[5]?" · "+p[5]:""):p[0],stt=p[1]==="G"||p[1]==="Q"?(OUT[p[0]]?"사용 불가":ST[p[0]]?({ok:"여유",mid:"보통",full:"가득 참"})[ST[p[0]].v]:"제보 없음"):"";
 return `<button class="nl" data-i="${i}"><span><b>${escH(nm)}</b><span class="m"> ${SHORT[p[1]]}${stt?" · "+stt:""}</span></span><span class="m">${m}m</span></button>`}).join("");
-c.innerHTML=`<div class="nh"><h2 style="margin:0">내 주변 ${NR}m</h2><span class="m">반납함 ${near.length}곳</span></div><div class="nrs">${[50,100,200].map(r=>`<button class="${r===NR?"s":""}" data-r="${r}">${r}m</button>`).join("")}<button data-r="0">닫기</button></div>${rows||'<div class="m" style="margin-top:8px">이 범위 안에는 반납함이 없어요. 범위를 넓혀 보세요.</div>'}${meAcc>40?`<div class="m" style="margin-top:8px">위치 정확도가 ±${Math.round(meAcc)}m예요. 실제 위치와 다를 수 있어요.</div>`:""}`;
+c.innerHTML=`<div class="nh"><h2 style="margin:0">내 주변 ${NR}m</h2><button class="nx" data-r="0" aria-label="닫기"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="nrs">${[50,100,200].map(r=>`<button class="${r===NR?"s":""}" data-r="${r}">${r}m</button>`).join("")}</div>${rows||'<div class="m" style="margin-top:8px">이 범위 안에는 반납함이 없어요.</div>'}${meAcc>40?`<div class="m" style="margin-top:8px">위치 정확도가 ±${Math.round(meAcc)}m예요. 실제 위치와 다를 수 있어요.</div>`:""}`;
 c.querySelectorAll(".nl").forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
-c.querySelectorAll(".nrs button").forEach(b=>b.onclick=()=>{const r=+b.dataset.r;if(!r){near=null;sel=null;draw();c.innerHTML='<span class="m">지도의 핀을 눌러 보세요.</span>';return}NR=r;near=inNear();sel=null;draw();nearCard()})}
+c.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{const r=+b.dataset.r;if(!r){near=null;sel=null;draw();c.innerHTML='<span class="m">지도의 핀을 눌러 보세요.</span>';return}NR=r;near=inNear();sel=null;draw();nearCard()})}
 function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
 function metersPerUnit(){const c=cc();return 1/Math.hypot(c.ar,c.ai)}
 function pick(i,center){
