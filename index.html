@@ -58,6 +58,7 @@ h1{font-family:Jua,"Apple SD Gothic Neo",sans-serif;font-weight:400}
 .zb{position:absolute;right:10px;top:10px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .zb button{width:38px;height:38px;border-radius:12px;padding:0;font-size:22px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.18)}
 #sheet{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+#locd{position:fixed;inset:0;z-index:55;display:flex;align-items:flex-end;justify-content:center}#locd[hidden]{display:none}#lbk{position:absolute;inset:0;background:rgba(15,20,40,.45)}#lpn{position:relative;width:100%;max-width:760px;background:var(--card);border-radius:22px 22px 0 0;padding:20px 16px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 24px rgba(0,0,0,.2)}#ltx{font-size:15px;line-height:1.6;word-break:keep-all}#lsb{margin-top:6px;word-break:keep-all}
 #sbk{position:absolute;inset:0;background:rgba(15,20,40,.45)}
 #spn{position:relative;width:100%;max-width:760px;background:var(--card);border-radius:22px 22px 0 0;padding:18px 16px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 24px rgba(0,0,0,.2)}
 .so{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2px solid var(--bd);border-radius:14px;padding:12px 14px;margin-bottom:8px;font-size:15px;font-weight:700;background:var(--card);color:var(--tx)}
@@ -152,8 +153,10 @@ button.dc{border:0;font:inherit;color:var(--tx);width:100%}
 <nav id="nav"><button class="on" onclick="tab(1)" aria-label="지도"><span data-ic="map"></span></button><button onclick="tab(2)" aria-label="건물"><span data-ic="bld"></span></button><button onclick="tab(3)" aria-label="시간표" hidden><span data-ic="cal"></span></button><button onclick="tab(4)" aria-label="캐릭터"><span data-ic="char"></span></button></nav>
 <div id="pinp" hidden><button id="pinx" type="button" aria-label="닫기">×</button><div id="pind"><i></i><i></i><i></i><i></i></div><div id="pinpad"></div></div>
 <div id="admp" hidden><div id="admc"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:17px">관리자</b><button id="admx" type="button">나가기</button></div>
+<div class="bc" style="margin-top:14px"><b>제보 위치 제한</b><div style="display:flex;gap:8px;margin-top:10px"><button id="admg" type="button" style="flex:1;border-radius:12px;padding:12px"></button></div></div>
 <div class="bc" style="margin-top:14px"><b>제보 전부 초기화</b><div style="display:flex;gap:8px;margin-top:10px"><button id="admr" type="button" class="on" style="flex:1;border-radius:12px;padding:12px">초기화</button><button id="admn" type="button" hidden style="border-radius:12px;padding:12px">취소</button></div></div></div></div>
 <div id="sheet" hidden><div id="sbk"></div><div id="spn"><div style="font-weight:700;font-size:17px">상태 제보하기</div><div class="m" id="ssub" style="margin:3px 0 12px"></div><div id="sopts"></div><div class="sbt"><button id="scx">취소</button><button id="sok" class="on" disabled>제보하기</button></div></div></div>
+<div id="locd" hidden><div id="lbk"></div><div id="lpn"><div id="ltx"></div><div class="m" id="lsb"></div><div class="sbt" style="margin-top:14px"><button id="lcx" type="button">닫기</button><button id="lre" type="button" class="on">다시 시도</button></div></div></div>
 <div id="tour" hidden><div id="tblk"></div><div id="tspot"></div><div id="ttip"><button id="tcl" aria-label="닫기"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div id="ttx"></div><div id="tft"><span id="tcn"></span><button id="tpv">이전</button><button id="tnx">다음</button></div></div></div>
 <div id="toast" hidden></div>
 <script>
@@ -378,12 +381,29 @@ document.querySelectorAll("[data-ic]").forEach(e=>{e.innerHTML=I(e.dataset.ic)})
 (function(){const w=document.getElementById("wrap");w.scrollLeft=Math.max(0,(w.scrollWidth-w.clientWidth)/2);w.scrollTop=Math.max(0,(w.scrollHeight-w.clientHeight)/2)})();
 // ---- 제보 팝업 ----
 let rid=null,rv=null;
-function openRep(id){const g=repGate(id);if(!g.ok){toast(g.msg);return}rid=id;rv=null;const p=P.find(q=>q[0]===id);
+function showRep(id){rid=id;rv=null;const p=P.find(q=>q[0]===id);
 document.getElementById("ssub").textContent=p[4]+(p[5]?" · "+p[5]:"")+" · "+NAME[p[1]];
 const O=[["ok","여유","컵을 넣을 자리가 충분해요"],["mid","보통","반쯤 찼지만 아직 넣을 수 있어요"],["full","가득 참","넘치거나 더 넣기 어려워요"]];
 document.getElementById("sopts").innerHTML=O.map(o=>`<button class="so" data-v="${o[0]}">${I(o[0])}<span>${o[1]}<br><span class="m" style="font-weight:400">${o[2]}</span></span></button>`).join("");
 document.querySelectorAll("#sopts .so").forEach(b=>b.onclick=()=>{rv=b.dataset.v;document.querySelectorAll("#sopts .so").forEach(x=>x.className="so"+(x===b?" on2":""));document.getElementById("sok").disabled=false});
 document.getElementById("sok").disabled=true;document.getElementById("sheet").hidden=false}
+const REP_R=100;
+function locDlg(t,sub,retry,id){document.getElementById("ltx").textContent=t;document.getElementById("lsb").textContent=sub||"";const r=document.getElementById("lre");r.hidden=!retry;r.onclick=()=>{document.getElementById("locd").hidden=true;openRep(id)};document.getElementById("locd").hidden=false}
+document.getElementById("lcx").onclick=document.getElementById("lbk").onclick=()=>{document.getElementById("locd").hidden=true};
+function openRep(id){const g=repGate(id);if(!g.ok){toast(g.msg);return}
+let skip=false;try{skip=localStorage.getItem("cupnoloc")==="1"}catch(e){}
+if(skip){showRep(id);return}
+if(!navigator.geolocation){locDlg("이 기기에서는 위치를 확인할 수 없어서 제보할 수 없어요.","",false,id);return}
+toast("위치 확인 중...");
+navigator.geolocation.getCurrentPosition(pos=>{
+const p=P.find(q=>q[0]===id),m=gpsToMap(pos.coords.latitude,pos.coords.longitude),ac=Math.min(pos.coords.accuracy||0,50);
+const d=Math.hypot(m.x-p[2],m.y-p[3])*metersPerUnit();
+document.getElementById("toast").hidden=true;
+if(d-ac<=REP_R)showRep(id);
+else locDlg("이 반납함에서 너무 멀어요.","가까운 반납함만 제보할 수 있어요. 반납함 근처에서 다시 시도해 주세요.",true,id)
+},err=>{document.getElementById("toast").hidden=true;
+if(err&&err.code===1)locDlg("가까운 반납함만 제보할 수 있어요. 위치 권한을 허용해 주세요.","허용했는데도 안 되면 브라우저 설정에서 이 사이트의 위치 권한을 확인해 주세요.",true,id);
+else locDlg("위치를 확인하지 못했어요.","잠시 후 다시 시도해 주세요.",true,id)},{enableHighAccuracy:true,timeout:10000,maximumAge:20000})}
 function closeRep(){document.getElementById("sheet").hidden=true}
 function toast(t){const e=document.getElementById("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>{e.hidden=true},2200)}
 document.getElementById("scx").onclick=closeRep;document.getElementById("sbk").onclick=closeRep;
@@ -403,6 +423,7 @@ pad.onclick=e=>{const b=e.target.closest("button");if(!b)return;const k=b.datase
 if(k==="⌫")pin=pin.slice(0,-1);else if(pin.length<4)pin+=k;dots();
 if(pin.length===4){if(pin===ADM_PW){close();byId("admp").hidden=false}else{const d=byId("pind");d.classList.add("shk");setTimeout(()=>{d.classList.remove("shk");pin="";dots()},350)}}};
 byId("pinx").onclick=close;
+const gb=byId("admg"),gs=()=>{let o=0;try{o=localStorage.getItem("cupnoloc")==="1"}catch(e){}gb.textContent=o?"꺼짐 (테스트용)":"켜짐";gb.className=o?"":"on"};gs();gb.onclick=()=>{try{localStorage.setItem("cupnoloc",localStorage.getItem("cupnoloc")==="1"?"0":"1")}catch(e){}gs()};
 byId("admx").onclick=()=>{byId("admp").hidden=true;rstAsk(false)};
 const rb=byId("admr"),cn=byId("admn");let ask=false;
 function rstAsk(a){ask=a;rb.textContent=a?"정말 초기화":"초기화";cn.hidden=!a}
