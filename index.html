@@ -387,7 +387,7 @@ const O=[["ok","여유","컵을 넣을 자리가 충분해요"],["mid","보통",
 document.getElementById("sopts").innerHTML=O.map(o=>`<button class="so" data-v="${o[0]}">${I(o[0])}<span>${o[1]}<br><span class="m" style="font-weight:400">${o[2]}</span></span></button>`).join("");
 document.querySelectorAll("#sopts .so").forEach(b=>b.onclick=()=>{rv=b.dataset.v;document.querySelectorAll("#sopts .so").forEach(x=>x.className="so"+(x===b?" on2":""));document.getElementById("sok").disabled=false});
 document.getElementById("sok").disabled=true;document.getElementById("sheet").hidden=false}
-const REP_R=100;
+const REP_R=70;
 function locDlg(t,sub,retry,id){document.getElementById("ltx").textContent=t;document.getElementById("lsb").textContent=sub||"";const r=document.getElementById("lre");r.hidden=!retry;r.onclick=()=>{document.getElementById("locd").hidden=true;openRep(id)};document.getElementById("locd").hidden=false}
 document.getElementById("lcx").onclick=document.getElementById("lbk").onclick=()=>{document.getElementById("locd").hidden=true};
 function openRep(id){const g=repGate(id);if(!g.ok){toast(g.msg);return}
